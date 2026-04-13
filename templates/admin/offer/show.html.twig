@@ -1,0 +1,47 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var offers App\Entity\Offer #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Акция{% endblock %}
+
+{% block content_header_title %}Акция{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_offer_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_offer_edit', {'id': offer.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ offer.id }}</td>
+            </tr>
+            <tr>
+                <th>Иконка</th>
+                <td>
+                    {% if offer.icon %}
+                        <img src="{{ vich_uploader_asset(offer, 'iconFile') }}" alt="">
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Заголовок</th>
+                <td>{{ offer.header }}</td>
+            </tr>
+            <tr>
+                <th>Краткое описание</th>
+                <td>{{ offer.description }}</td>
+            </tr>
+            <tr>
+                <th>Текст</th>
+                <td>{{ offer.text }}</td>
+            </tr>
+            <tr>
+                <th>Дата окончания</th>
+                <td>{{ offer.deadline ? offer.deadline|date('d.m.Y') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

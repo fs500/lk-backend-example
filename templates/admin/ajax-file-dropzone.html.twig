@@ -1,0 +1,26 @@
+{% block ajax_file_widget %}
+    {% apply spaceless %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                $(".dropbox-file-block").UploadFileWidget();
+            });
+        </script>
+        <div class="ajax-file">
+            <div class="dropbox-file-block {{ form.vars.id }}">
+                <div class="dropbox-file-zone"></div>
+            </div>
+            <div style="display: none">
+                <input type="file" data-url="{{ upload_url }}" class="ajax-file_file" />
+            </div>
+            {{ form_widget(form.originalFilename) }}
+            {{ form_widget(form.filename) }}
+            {{ form_widget(form.token) }}
+            <span class="invalid-feedback">
+                <span class="d-block">
+                    <span class="form-error-icon badge badge-danger text-uppercase">Ошибка</span>
+                    <span class="form-error-message">Значение недопустимо.</span>
+                </span>
+            </span>
+        </div>
+    {% endapply %}
+{% endblock %}

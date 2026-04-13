@@ -1,0 +1,33 @@
+{% block link_widget %}
+    {% set headerVisible = form.type.vars.value in [
+        constant("App\\Entity\\Link::TYPE_PAGE"),
+        constant("App\\Entity\\Link::TYPE_URL"),
+        constant("App\\Entity\\Link::TYPE_FILE"),
+        constant("App\\Entity\\Link::TYPE_FLATS_VISUAL"),
+        constant("App\\Entity\\Link::TYPE_FLATS_PARAMETER"),
+        constant("App\\Entity\\Link::TYPE_LIVE_BROADCAST"),
+        constant("App\\Entity\\Link::TYPE_NEWS_LIST"),
+    ] %}
+    <div class="block-link">
+        {{ form_row(form.type, { label: false }) }}
+        <div class="type-header-field {% if headerVisible == false %}hide{% endif %}">
+            {{ form_row(form.header) }}
+            {{ form_row(form.popup, { label: 'всплывающее окно'}) }}
+        </div>
+        <div class="type-field {% if form.type.vars.value != constant("App\\Entity\\Link::TYPE_PAGE") %}hide{% endif %}" data-type="{{ constant("App\\Entity\\Link::TYPE_PAGE") }}">
+            {{ form_row(form.page, { label: false }) }}
+        </div>
+        <div class="type-field {% if form.type.vars.value != constant("App\\Entity\\Link::TYPE_FLATS_VISUAL") %}hide{% endif %}" data-type="{{ constant("App\\Entity\\Link::TYPE_FLATS_VISUAL") }}">
+        </div>
+        <div class="type-field {% if form.type.vars.value != constant("App\\Entity\\Link::TYPE_FLATS_PARAMETER") %}hide{% endif %}" data-type="{{ constant("App\\Entity\\Link::TYPE_FLATS_PARAMETER") }}">
+        </div>
+        <div class="type-field {% if form.type.vars.value != constant("App\\Entity\\Link::TYPE_URL") %}hide{% endif %}" data-type="{{ constant("App\\Entity\\Link::TYPE_URL") }}">
+            {{ form_row(form.url, { label: false }) }}
+        </div>
+        <div class="type-field {% if form.type.vars.value != constant("App\\Entity\\Link::TYPE_FILE") %}hide{% endif %}" data-type="{{ constant("App\\Entity\\Link::TYPE_FILE") }}">
+            {{ form_row(form.uploadedFile, { label: false }) }}
+        </div>
+        <div class="type-field {% if form.type.vars.value != constant("App\\Entity\\Link::TYPE_LIVE_BROADCAST") %}hide{% endif %}" data-type="{{ constant("App\\Entity\\Link::TYPE_LIVE_BROADCAST") }}">
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% block setting_row  %}
+    <div class="setting-item">
+        <div class="form-group row">
+        <label class="col-form-label col-sm-2" for="{{ form.value.vars.id }}">{{ form.vars.data.header }}</label>
+            <div class="col-sm-10">
+                {% if form.vars.data.type == constant("App\\Entity\\Setting::TYPE_NUMERIC") %}
+                    <input class="form-control" id="{{ form.value.vars.id }}" name="{{ form.value.vars.full_name }}" type="number" value="{{ form.vars.data.value }}">
+                {% endif %}
+                {% if form.vars.data.type == constant("App\\Entity\\Setting::TYPE_SCRIPT") %}
+                    <textarea class="form-control" id="{{ form.value.vars.id }}" name="{{ form.value.vars.full_name }}" rows="7">{{ form.vars.data.value }}</textarea>
+                {% endif %}
+                {% if form.vars.data.type == constant("App\\Entity\\Setting::TYPE_TEXT") %}
+                    <textarea class="form-control" id="{{ form.value.vars.id }}" name="{{ form.value.vars.full_name }}" rows="7">{{ form.vars.data.value }}</textarea>
+                {% endif %}
+                {% if form.vars.data.type == constant("App\\Entity\\Setting::TYPE_URL") %}
+                    <input class="form-control" id="{{ form.value.vars.id }}" name="{{ form.value.vars.full_name }}" type="text" value="{{ form.vars.data.value }}">
+                {% endif %}
+                {% if form.vars.data.type == constant("App\\Entity\\Setting::TYPE_STRING") %}
+                    <input class="form-control" id="{{ form.value.vars.id }}" name="{{ form.value.vars.full_name }}" type="text" value="{{ form.vars.data.value }}">
+                {% endif %}
+                {% if form.vars.data.type == constant("App\\Entity\\Setting::TYPE_PASSWORD") %}
+                    <input class="form-control" id="{{ form.value.vars.id }}" name="{{ form.value.vars.full_name }}" type="password" value="{{ form.vars.data.value }}">
+                {% endif %}
+                {% if form.vars.data.type == constant("App\\Entity\\Setting::TYPE_FILE") %}
+                    {{ form_row(form.uploadedFile) }}
+                {% endif %}
+                {{ form_rest(form.value) }}
+                {% if form.uploadedFile.file is not empty %}
+                {{ form_rest(form.uploadedFile.file) }}
+                {% endif %}
+                <small class="form-text text-muted">{{ form.vars.data.note|raw }}</small>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block collection_row %}
+    {{ block('form_widget') }}
+{% endblock collection_row %}
+{% block ajax_file_row %}
+    {{ block ('ajax_file_widget') }}
+{% endblock %}
+{% block form_label %}{% endblock %}

@@ -1,0 +1,76 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var flats App\Entity\Flat[] #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin') }}
+{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+
+
+{% block title %}Квартиры{% endblock %}
+
+{% block content_header_title %}Квартиры{% endblock %}
+
+{% block page_actions %}
+<a class="action-new btn btn-primary btn-sm" href="{{ path('admin_flat_new') }}">Добавить</a>
+<a class="btn btn-secondary btn-sm" href="{{ path('admin_flat_export') }}">Скачать xlsx</a>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(search, {'attr': {'class': 'search-form'}}) }}
+    {{ form_widget(search.sort) }}
+    {{ form_widget(search.sortOrder) }}
+    <table class="table table-striped table-sm search-table">
+        <thead>
+            <tr>
+                {{ sortHeader(searchEntity,'number', 'Номер')|raw }}
+                {{ sortHeader(searchEntity,'floor', 'Этаж')|raw }}
+                {{ sortHeader(searchEntity,'rooms', 'Комнатность')|raw }}
+                {{ sortHeader(searchEntity,'status', 'Статус')|raw }}
+                {{ sortHeader(searchEntity,'price', 'Цена')|raw }}
+                {{ sortHeader(searchEntity,'priceFinish', 'Цена с отделкой')|raw }}
+                {{ sortHeader(searchEntity,'priceAction', 'Цена по акции')|raw }}
+                <th class="list-options"></th>
+            </tr>
+            <tr>
+                <td>{{ form_widget(search.number) }}</td>
+                <td>{{ form_widget(search.floor) }}</td>
+                <td>{{ form_widget(search.rooms) }}</td>
+                <td>{{ form_widget(search.status) }}</td>
+                <td>{{ form_widget(search.price) }}</td>
+                <td>{{ form_widget(search.priceFinish) }}</td>
+                <td>{{ form_widget(search.priceAction) }}</td>
+            </tr>
+        </thead>
+        <tbody>
+        {% for flat in flats %}
+            <tr>
+                <td>{{ flat.number }}</td>
+                <td>{{ flat.floor }}</td>
+                <td>{{ flat.roomsHeader }}</td>
+                <td>{{ flat.statusHeader }}</td>
+                <td>{{ flat.price }}</td>
+                <td>{{ flat.priceFinish }}</td>
+                <td>{{ flat.priceAction }}</td>
+                <td class="list-actions">
+                    <a class="fa fa-icons fa-pencil-square-o list-edit-button" href="{{ path('admin_flat_edit', {'id': flat.id}) }}"></a>
+                    <a class="fas fa-eye list-detail-button" href="{{ path('admin_flat_show', {'id': flat.id}) }}"></a>
+                    <a class="fas fa-trash-alt list-remove-button" data-id="{{ flat.id }}" href="{{ path('admin_flat_delete', {'id': flat.id}) }}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <button class="search-form-submit" type="submit" tabindex="-1"></button>
+    {{ form_end(search) }}
+    <form class="delete-form" method="post" data-action="{{ path('admin_flat_delete', {'id': '__id__'}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endblock %}

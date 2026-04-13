@@ -1,0 +1,60 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    locale: 'ru'
+    app.path.public: '%kernel.project_dir%/public'
+    app.path.files: '/uploads/files'
+    app.path.images: '/uploads/images'
+    app.path.converted: '/images/converted/png'
+    app.path.temp: '/uploads/temp'
+    app.path.setting: '/uploads/setting'
+    site_name: '%env(SITE_NAME)%'
+    redis.dsn: '%env(REDIS_DSN)%'
+    mailer.email: '%env(MAILER_EMAIL)%'
+    router.request_context.host: '%env(REQUEST_HOST)%'
+    router.request_context.scheme: '%env(REQUEST_SCHEME)%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            string $projectDir: '%kernel.project_dir%'
+            string $pdfDir: '%kernel.project_dir%/public/pdf'
+            string $host: '%env(REQUEST_HOST)%'
+            string $scheme: '%env(REQUEST_SCHEME)%'
+            string $convertDir: '%kernel.project_dir%/public/images/converted'
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/swagger_info.php'
+            - '../src/Tests/'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    Liip\ImagineBundle\Service\FilterService: "@liip_imagine.service.filter"
+    App\Event\Subscriber\PDFSubscriber:
+        tags:
+            - name: 'doctrine.event_subscriber'
+    App\Twig\SearchTableExtension:
+        tags:
+            - name: 'twig.extension'
+    App\Event\EntityListener\FlatPlanConverterListener:
+        tags:
+            - { name: doctrine.orm.entity_listener, event: postUpdate }
+        arguments:
+            - '@App\Services\SVG2PNGConverter'
+    Eyetronic\YandexBuildingYml\YmlGenerator:
+        class: Eyetronic\YandexBuildingYml\YmlGenerator
+        tags:
+            - name: 'eyetronic.yandex_building_yml.generator'

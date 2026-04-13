@@ -1,0 +1,61 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=ZuGQwMgQD0gchlb8CSd4TO3
+      - MYSQL_DATABASE=brownhouse_db
+      - MYSQL_USER=brownhouse
+      - MYSQL_PASSWORD=autCDPiebnIT9rVo9JLKPGRfHPFlO
+    command: mysqld --sql_mode=""
+    volumes:
+      - mysql-data:/var/lib/mysql/:rw
+
+  nginx-fpm:
+    image: registry.gitlab.art.su/mihajlov/brown-house-api
+    restart: always
+    ports:
+      - 80:80
+    build:
+      context: .
+      dockerfile: ./build/nginx-fpm/Dockerfile
+    volumes:
+      - app_media_cache:/www/app/public/media/cache
+      - app_uploads:/www/app/public/uploads
+      - app_images:/www/app/public/images
+      - app_config:/www/app/env/
+      - app_pdf:/www/app/public/pdf
+  redis:
+    image: redis
+    restart: always
+    volumes:
+      - redis-data:/var/lib/redis/:rw
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+  backend:
+    image: registry.gitlab.art.su/mihajlov/brown-house-api
+    command: su -c '/www/app/bin/console messenger:consume amqp_pdf_notification' -s /bin/bash nginx
+    build:
+      context: .
+      dockerfile: ./build/backend/Dockerfile
+    volumes:
+      - app_media_cache:/www/app/public/media/cache
+      - app_uploads:/www/app/public/uploads
+      - app_images:/www/app/public/images
+      - app_config:/www/app/env/
+      - app_pdf:/www/app/public/pdf
+
+volumes:
+  mysql-data:
+  redis-data:
+  app_media_cache:
+  app_uploads:
+  app_config:
+  app_images:
+  app_pdf:

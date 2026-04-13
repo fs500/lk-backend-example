@@ -1,0 +1,2 @@
+symfony_metatag:
+  entity_class: App\Entity\Metatag

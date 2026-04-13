@@ -1,0 +1,1640 @@
+openapi: 3.0.0
+info:
+  title: 'Brown House API'
+  contact:
+    email: m@art.su
+  version: 0.1.0
+paths:
+  '/api/calculator/{flatNumber}':
+    get:
+      tags:
+        - Калькулятор
+      summary: 'Ипотечный калькулятор квартиры'
+      operationId: 'App\Controller\API\CalculatorController::index'
+      parameters:
+        -
+          $ref: '#/components/parameters/flatNumber'
+      responses:
+        '200':
+          description: 'Данные страницы ипотечного калькулятора квартиры'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MortgageCalculator'
+  /api/common:
+    get:
+      tags:
+        - Общее
+      summary: 'Общие данные'
+      operationId: 'App\Controller\API\CommonController::index'
+      responses:
+        '200':
+          description: 'Общие данные по сайту'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Common'
+  /api/flat/visual:
+    get:
+      tags:
+        - Квартиры
+      summary: 'Визуальный выбор квартиры'
+      operationId: 'App\Controller\API\FlatController::visual'
+      responses:
+        '200':
+          description: 'Данные страницы визуального выбора квартиры'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatVisual'
+  /api/flat/parameters:
+    get:
+      tags:
+        - Квартиры
+      summary: 'Получение параметров для поиска квартиры'
+      operationId: 'App\Controller\API\FlatController::parameters'
+      responses:
+        '200':
+          description: 'Данные для формы подбора квартиры по параметрам'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatParameters'
+  /api/flat/list:
+    post:
+      tags:
+        - Квартиры
+      summary: 'Список квартир по параметрам'
+      parameters:
+        -
+          $ref: '#/components/parameters/rooms'
+        -
+          $ref: '#/components/parameters/priceMin'
+        -
+          $ref: '#/components/parameters/priceMax'
+        -
+          $ref: '#/components/parameters/areaMin'
+        -
+          $ref: '#/components/parameters/areaMax'
+        -
+          $ref: '#/components/parameters/floorMin'
+        -
+          $ref: '#/components/parameters/floorMax'
+        -
+          $ref: '#/components/parameters/sortField'
+        -
+          $ref: '#/components/parameters/sortOrder'
+        -
+          $ref: '#/components/parameters/statuses'
+      responses:
+        '200':
+          description: 'Список квартир по параметрам'
+          headers:
+            X-Total-Count:
+              description: 'Количество квартир в списке'
+              schema:
+                type: number
+                format: integer
+                example: 15
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatList'
+  '/api/flat/floor/{floorNumber}':
+    get:
+      tags:
+        - Квартиры
+      summary: 'Получение страницы этажа'
+      operationId: 'App\Controller\API\FlatController::floor'
+      parameters:
+        -
+          $ref: '#/components/parameters/floorNumber'
+      responses:
+        '200':
+          description: 'Данные страницы этажа'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatFloor'
+  '/api/flat/{floorNumber}/{flatNumber}':
+    get:
+      tags:
+        - Квартиры
+      summary: 'Получение карточки квартиры'
+      operationId: 'App\Controller\API\FlatController::card'
+      parameters:
+        -
+          $ref: '#/components/parameters/floorNumber'
+        -
+          $ref: '#/components/parameters/flatNumber'
+      responses:
+        '200':
+          description: 'Данные страницы карточки квартиры'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatCard'
+  '/api/flat/{flatNumber}':
+    get:
+      tags:
+        - Квартиры
+      summary: 'Получение карточки квартиры'
+      operationId: 'App\Controller\API\FlatController::single'
+      parameters:
+        -
+          $ref: '#/components/parameters/flatNumber'
+      responses:
+        '200':
+          description: 'Данные страницы карточки квартиры'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlatCard'
+  /api/menu:
+    get:
+      tags:
+        - Меню
+      summary: Меню
+      operationId: 'App\Controller\API\MenuController::index'
+      responses:
+        '200':
+          description: 'Данные меню сайта'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+  /api/metatag:
+    get:
+      tags:
+        - Метатеги
+      summary: 'Метатеги для страницы по запрошенному URI'
+      operationId: 'App\Controller\API\MetatagController::search'
+      parameters:
+        -
+          $ref: '#/components/parameters/metatag_uri'
+      responses:
+        '200':
+          description: 'Метатеги запрошенной страницы'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metatag'
+  /api/news:
+    get:
+      tags:
+        - Новости
+      summary: 'Список новостей'
+      parameters:
+        -
+          $ref: '#/components/parameters/limit'
+        -
+          $ref: '#/components/parameters/offset'
+      responses:
+        '200':
+          description: 'Список новостей'
+          headers:
+            X-Total-Count:
+              description: 'Общее количество новостей'
+              schema:
+                type: number
+                format: integer
+                example: 15
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NewsListItem'
+  '/api/news/{path}':
+    get:
+      tags:
+        - Новости
+      summary: 'Одиночная новость со списком последних'
+      operationId: 'App\Controller\API\NewsController::single'
+      responses:
+        '200':
+          description: 'Одиночная новость со списком последних'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsSingle'
+  /api/page/index:
+    get:
+      tags:
+        - Страницы
+      summary: 'Главная страница'
+      operationId: 'App\Controller\API\PageController::index'
+      responses:
+        '200':
+          description: 'Данные главной страницы сайта'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageIndex'
+  /api/page/contacts:
+    get:
+      tags:
+        - Страницы
+      summary: Контакты
+      operationId: 'App\Controller\API\PageController::contacts'
+      responses:
+        '200':
+          description: 'Данные страницы контактов'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageContacts'
+  /api/page/how_to_buy:
+    get:
+      tags:
+        - Страницы
+      summary: 'Как купить'
+      operationId: 'App\Controller\API\PageController::howToBuy'
+      responses:
+        '200':
+          description: 'Данные страницы ''Как Купить'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageHowToBuy'
+  /api/page/documents:
+    get:
+      tags:
+        - Страницы
+      summary: Документы
+      operationId: 'App\Controller\API\PageController::documents'
+      responses:
+        '200':
+          description: 'Данные страницы ''Документы'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageDocuments'
+  /api/page/building_progress:
+    get:
+      tags:
+        - Страницы
+      summary: 'Ход строительства'
+      operationId: 'App\Controller\API\PageController::buildingProgress'
+      responses:
+        '200':
+          description: 'Данные страницы ''Ход строительства'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageBuildingProgress'
+  /api/page/commerce:
+    get:
+      tags:
+        - Страницы
+      summary: Коммерция
+      operationId: 'App\Controller\API\PageController::commerce'
+      responses:
+        '200':
+          description: 'Данные страницы ''Коммерция'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageCommerce'
+  /api/page/location:
+    get:
+      tags:
+        - Страницы
+      summary: 'Страница Расположение'
+      operationId: 'App\Controller\API\PageController::location'
+      responses:
+        '200':
+          description: 'Данные страницы Расположение'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageLocation'
+components:
+  schemas:
+    Common:
+      description: 'Class CommonView'
+      properties:
+        phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+        socialNetworks:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialNetwork'
+        scripts:
+          $ref: '#/components/schemas/Scripts'
+        legalText:
+          description: 'Правовая информация в футере сайта'
+          type: string
+        notification:
+          $ref: '#/components/schemas/Notification'
+      type: object
+    ContactsItem:
+      description: 'Class ContactsOfficeView'
+      properties:
+        address:
+          type: string
+        route:
+          $ref: '#/components/schemas/Link'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+        mapLatitude:
+          type: number
+          format: float
+        mapLongitude:
+          type: number
+          format: float
+      type: object
+    DocumentItem:
+      description: 'Class DocumentItemView'
+      properties:
+        date:
+          $ref: '#/components/schemas/Date'
+        name:
+          $ref: '#/components/schemas/Name'
+        header:
+          $ref: '#/components/schemas/Header'
+        type:
+          description: 'Тип документа'
+          type: string
+          example: pdf
+        size:
+          description: 'Размер документа'
+          type: string
+          example: '123 Кб'
+        url:
+          type: string
+          format: uri
+      type: object
+    FlatCardFloor:
+      description: 'Class FlatCardFloorView'
+      properties:
+        number:
+          $ref: '#/components/schemas/Number'
+        plan:
+          $ref: '#/components/schemas/Image'
+        flats:
+          description: 'Краткое описание квартир для формирования ссылок на мини плане этажа'
+          type: array
+          items:
+            properties:
+              number:
+                $ref: '#/components/schemas/Number'
+              status:
+                description: 'Статус квартиры'
+                type: string
+                enum:
+                  - free
+                  - sold
+                  - reserved
+                  - closed
+            type: object
+      type: object
+    FlatCard:
+      description: 'Class FlatCardView'
+      properties:
+        floors:
+          description: Этажи
+          type: array
+          items:
+            $ref: '#/components/schemas/FlatCardFloor'
+        id:
+          $ref: '#/components/schemas/Id'
+        number:
+          $ref: '#/components/schemas/Number'
+        floor:
+          $ref: '#/components/schemas/Number'
+        totalFloors:
+          $ref: '#/components/schemas/Number'
+        rooms:
+          type: string
+          enum:
+            - s
+            - '1'
+            - '2'
+            - '3'
+        area:
+          description: 'Общая площадь'
+          type: number
+          format: float
+          example: 45.7
+        areaKitchen:
+          description: 'Площадь кухни'
+          type: number
+          format: float
+          example: 15.7
+        areaRooms:
+          description: 'Площадь кухни'
+          type: number
+          format: float
+          example: 30
+        price:
+          type: number
+          format: integer
+          example: 5000000
+        priceFinish:
+          type: number
+          format: integer
+          example: 5000000
+        priceAction:
+          type: number
+          format: integer
+          example: 5000000
+        priceActionText:
+          type: string
+          example: 'Текст акции'
+        plan:
+          $ref: '#/components/schemas/Image'
+        plan3d:
+          $ref: '#/components/schemas/Image'
+        planUrl:
+          $ref: '#/components/schemas/URI'
+        status:
+          description: 'Статус квартиры'
+          type: string
+          enum:
+            - free
+            - sold
+            - reserved
+            - closed
+        pdf:
+          $ref: '#/components/schemas/URI'
+      type: object
+    FlatFloorFlat:
+      description: 'Class FlatFloorFlatView'
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        number:
+          $ref: '#/components/schemas/Number'
+        rooms:
+          type: string
+          enum:
+            - s
+            - '1'
+            - '2'
+            - '3'
+        area:
+          type: number
+          format: float
+          example: 45.7
+        price:
+          type: number
+          format: integer
+          example: 5000000
+        priceAction:
+          type: number
+          format: integer
+          example: 5000000
+        priceActionText:
+          type: string
+          example: 'Текст акции'
+        status:
+          type: string
+          enum:
+            - free
+            - sold
+            - reserved
+            - closed
+      type: object
+    FlatFloor:
+      description: 'Class FlatFloorView'
+      properties:
+        plan:
+          $ref: '#/components/schemas/Image'
+        floors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlatVisualFloor'
+        flats:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlatFloorFlat'
+      type: object
+    FlatListItem:
+      description: 'Class FlatListItemView'
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        number:
+          $ref: '#/components/schemas/Number'
+        rooms:
+          type: string
+          enum:
+            - s
+            - '1'
+            - '2'
+            - '3'
+        status:
+          type: string
+          enum:
+            - free
+            - reserved
+            - sold
+            - closed
+        area:
+          type: number
+          format: float
+          example: 45.7
+        floor:
+          type: number
+          format: integer
+          example: 5
+        price:
+          type: number
+          format: integer
+          example: 5000000
+        priceFinish:
+          type: number
+          format: integer
+          example: 5000000
+        priceAction:
+          type: number
+          format: integer
+          example: 5000000
+        priceActionText:
+          type: string
+          example: 'Текст акции'
+        plan:
+          $ref: '#/components/schemas/Image'
+      type: object
+    FlatList:
+      description: 'Class FlatListView'
+      properties:
+        sortField:
+          description: 'Поле сортировки текущего списка'
+          type: string
+          enum:
+            - rooms
+            - area
+            - floor
+            - price
+          example: price
+        sortOrder:
+          description: 'Порядок сортировки текущего списка'
+          type: string
+          enum:
+            - asc
+            - desc
+          example: asc
+        flats:
+          description: 'Список квартир'
+          type: array
+          items:
+            $ref: '#/components/schemas/FlatListItem'
+        totalFloors:
+          description: 'Максимально доступный этаж'
+          type: number
+          format: integer
+          example: 9
+      type: object
+    FlatParameters:
+      description: 'Class FlatParametersView'
+      properties:
+        rooms:
+          description: Комнатность
+          type: array
+          items:
+            type: string
+            enum:
+              - s
+              - 1
+              - 2
+              - 3
+        priceMin:
+          description: 'Минимально доступная цена'
+          type: number
+          format: integer
+          example: 2000000
+        priceMax:
+          description: 'Максимально доступная цена'
+          type: number
+          format: integer
+          example: 10000000
+        areaMin:
+          description: 'Минимально доступная площадь'
+          type: number
+          format: float
+          example: 35.8
+        areaMax:
+          description: 'Максимально доступная площадь'
+          type: number
+          format: float
+          example: 75.4
+        floorMin:
+          description: 'Минимально доступный этаж'
+          type: number
+          format: integer
+          example: 2
+        floorMax:
+          description: 'Максимально доступный этаж'
+          type: number
+          format: integer
+          example: 9
+        statuses:
+          description: 'Статусы квартир'
+          type: array
+          items:
+            type: string
+            enum:
+              - free
+              - reserved
+              - sold
+      type: object
+    FlatVisualFloorFlat:
+      description: 'Class FlatVisualFloorFlatView'
+      properties:
+        type:
+          description: 'Тип квартиры по комнатности'
+          type: string
+          enum:
+            - s
+            - 1
+            - 2
+            - 3
+          example: s
+        quantity:
+          description: 'Количество квартир указанного типа на этаже'
+          type: number
+          format: integer
+          example: 2
+        minPrice:
+          description: 'Минимальная цена квартиры указанного типа на этаже'
+          type: number
+          format: integer
+      type: object
+    FlatVisualFloor:
+      description: 'Class FlatVisualFloorView'
+      properties:
+        number:
+          $ref: '#/components/schemas/Number'
+        inSales:
+          description: 'Количество квартир в продаже'
+          type: number
+          format: integer
+          example: 2
+        flats:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlatVisualFloorFlat'
+      type: object
+    FlatVisual:
+      description: 'Class FlatVisualView'
+      properties:
+        floors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FlatVisualFloor'
+      type: object
+    HowToGetItem:
+      description: 'Class HowToGetItemView'
+      properties:
+        icon:
+          $ref: '#/components/schemas/Image'
+        header:
+          $ref: '#/components/schemas/Header'
+        text:
+          $ref: '#/components/schemas/Text'
+        note:
+          $ref: '#/components/schemas/Text'
+      type: object
+    Link:
+      description: 'Ссылка на внешний\внутренний ресурс'
+      properties:
+        data:
+          properties:
+            type:
+              description: 'Тип страницы'
+              type: string
+              enum:
+                - url
+                - file
+                - page
+                - flats_visual
+                - flats_parameter
+                - livebroadcast
+                - news
+              example: url
+            path:
+              description: 'Компоненты url'
+              type: array
+              items:
+                type: string
+                example: index
+          type: object
+        popup:
+          description: 'всплывающее окно'
+          type: boolean
+        text:
+          $ref: '#/components/schemas/Text'
+      type: object
+    LiveBroadcast:
+      description: 'Class LiveBroadcastView'
+      properties:
+        type:
+          description: 'Ссылка на трансляцию'
+          type: string
+          enum:
+            - m3u
+            - iframe
+        url:
+          $ref: '#/components/schemas/URI'
+      type: object
+    Map:
+      description: 'Class MapView'
+      properties:
+        latitude:
+          type: number
+          format: float
+        longitude:
+          type: number
+          format: float
+        scale:
+          type: integer
+      type: object
+    MenuItem:
+      description: 'Class MenuItemView'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        link:
+          $ref: '#/components/schemas/Link'
+      type: object
+    Menu:
+      description: 'Class MenuView'
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuItem'
+        socialNetwork:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialNetwork'
+      type: object
+    Metatag:
+      description: Метатеги
+      properties:
+        title:
+          type: string
+          example: Контакты
+          nullable: true
+        keywords:
+          type: string
+          example: 'адрес телефон email'
+          nullable: true
+        description:
+          type: string
+          example: 'Адрес и телефон компании'
+          nullable: true
+      type: object
+    MortgageCalculator:
+      description: 'Class MortgageCalculator'
+      properties:
+        priceMin:
+          type: integer
+        priceMax:
+          type: integer
+        defaultPrice:
+          type: integer
+        paymentMin:
+          type: integer
+        paymentMax:
+          type: integer
+        defaultPayment:
+          type: integer
+        yearsMin:
+          type: integer
+        yearsMax:
+          type: integer
+        defaultYear:
+          type: integer
+        rateMin:
+          type: integer
+        rateMax:
+          type: integer
+        defaultRate:
+          type: integer
+      type: object
+    NewsListItem:
+      description: 'Class NewsListView'
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        header:
+          $ref: '#/components/schemas/Header'
+        date:
+          $ref: '#/components/schemas/Date'
+        path:
+          $ref: '#/components/schemas/Path'
+        description:
+          $ref: '#/components/schemas/Description'
+      type: object
+    NewsList:
+      description: 'Class NewsListView'
+      properties:
+        before:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsListItem'
+        after:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsListItem'
+      type: object
+    NewsSingle:
+      description: 'Class NewsSingleView'
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        header:
+          $ref: '#/components/schemas/Header'
+        date:
+          $ref: '#/components/schemas/Date'
+        path:
+          $ref: '#/components/schemas/Path'
+        description:
+          $ref: '#/components/schemas/Description'
+        text:
+          $ref: '#/components/schemas/Text'
+        image:
+          $ref: '#/components/schemas/Image'
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsListItem'
+      type: object
+    Notification:
+      description: 'Class NotificationView'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        text:
+          $ref: '#/components/schemas/Text'
+        image:
+          $ref: '#/components/schemas/Image'
+        buttonText:
+          $ref: '#/components/schemas/Header'
+        buttonUrl:
+          $ref: '#/components/schemas/URI'
+      type: object
+    PageBuildingProgressMonth:
+      description: 'Class PageBuildingProgressMonthView'
+      properties:
+        month:
+          $ref: '#/components/schemas/Number'
+        description:
+          $ref: '#/components/schemas/Description'
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+      type: object
+    PageBuildingProgress:
+      description: 'Class PageBuildingProgressView'
+      properties:
+        liveBroadcast:
+          $ref: '#/components/schemas/LiveBroadcast'
+        years:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageBuildingProgressYear'
+      type: object
+    PageBuildingProgressYear:
+      description: 'Class PageBuildingProgressItemView'
+      properties:
+        number:
+          $ref: '#/components/schemas/Number'
+        months:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageBuildingProgressMonth'
+      type: object
+    PageCommerceRoomsItem:
+      description: 'Class PageCommerceRoomsItemView'
+      properties:
+        image:
+          $ref: '#/components/schemas/Image'
+        price:
+          $ref: '#/components/schemas/Price'
+        floor:
+          description: 'Этаж квартиры'
+          type: number
+          format: integer
+          example: 3
+        floors:
+          description: 'Этажность здания'
+          type: number
+          format: integer
+          example: 9
+        area:
+          description: 'Площадь квартиры'
+          type: number
+          format: float
+          example: 56.36
+        number:
+          description: 'Номер квартиры'
+          type: number
+          format: integer
+          example: 32
+      type: object
+    PageCommerce:
+      description: 'Class PageCommerceView'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        leftHeader:
+          $ref: '#/components/schemas/Header'
+        leftImage:
+          $ref: '#/components/schemas/Image'
+        rightHeader:
+          $ref: '#/components/schemas/Header'
+        rightImage:
+          $ref: '#/components/schemas/Image'
+        promoHeader:
+          $ref: '#/components/schemas/Header'
+        promoText:
+          $ref: '#/components/schemas/Text'
+        promoItems:
+          type: array
+          items:
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              description:
+                $ref: '#/components/schemas/Description'
+            type: object
+        proprties:
+          description: 'Характеристики помещений'
+          type: array
+          items:
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              description:
+                $ref: '#/components/schemas/Description'
+              icon:
+                $ref: '#/components/schemas/Image'
+            type: object
+        rooms:
+          description: 'Помещения проекта'
+          type: array
+          items:
+            $ref: '#/components/schemas/PageCommerceRoomsItem'
+      type: object
+    PageContacts:
+      description: 'Class ContactsView'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        subHeader:
+          $ref: '#/components/schemas/SubHeader'
+        office:
+          $ref: '#/components/schemas/ContactsItem'
+        object:
+          $ref: '#/components/schemas/ContactsItem'
+        map:
+          $ref: '#/components/schemas/Map'
+        phone:
+          $ref: '#/components/schemas/Phone'
+        email:
+          $ref: '#/components/schemas/Email'
+        socialNetwork:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialNetwork'
+      type: object
+    PageDocuments:
+      description: 'Class PageDocumentsView'
+      properties:
+        documents:
+          description: 'Список документов'
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentItem'
+      type: object
+    PageHowToBuy:
+      description: 'Class PageHowToBuyView'
+      properties:
+        headerTopLine:
+          $ref: '#/components/schemas/Header'
+        headerBottomLine:
+          $ref: '#/components/schemas/Header'
+        image:
+          $ref: '#/components/schemas/Image'
+        terms:
+          type: array
+          items:
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              description:
+                $ref: '#/components/schemas/Description'
+              icon:
+                $ref: '#/components/schemas/Image'
+            type: object
+        howToHeader:
+          $ref: '#/components/schemas/Header'
+        howToSubheader:
+          $ref: '#/components/schemas/SubHeader'
+        howToTerms:
+          type: array
+          items:
+            properties:
+              description:
+                $ref: '#/components/schemas/Description'
+              icon:
+                $ref: '#/components/schemas/Image'
+            type: object
+        promos:
+          type: array
+          items:
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              description:
+                $ref: '#/components/schemas/Description'
+              deadline:
+                $ref: '#/components/schemas/Date'
+              text:
+                $ref: '#/components/schemas/Text'
+            type: object
+        reservationImage:
+          $ref: '#/components/schemas/Image'
+        reservationHeader:
+          $ref: '#/components/schemas/Header'
+        reservationTerms:
+          type: array
+          items:
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              description:
+                $ref: '#/components/schemas/Description'
+              icon:
+                $ref: '#/components/schemas/Image'
+            type: object
+        calculator:
+          $ref: '#/components/schemas/MortgageCalculator'
+        bankHeader:
+          $ref: '#/components/schemas/Header'
+        banks:
+          type: array
+          items:
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              image:
+                $ref: '#/components/schemas/Image'
+            type: object
+      type: object
+    PageIndexBuilder:
+      description: 'Class PageIndexBuilderView'
+      properties:
+        logo:
+          $ref: '#/components/schemas/Image'
+        header:
+          $ref: '#/components/schemas/Header'
+        text:
+          $ref: '#/components/schemas/Text'
+        achievements:
+          type: array
+          items:
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              subHeader:
+                $ref: '#/components/schemas/SubHeader'
+            type: object
+      type: object
+    PageIndexFlatItem:
+      description: 'Class PageIndexFlatItemView'
+      properties:
+        plan:
+          $ref: '#/components/schemas/Image'
+        price:
+          $ref: '#/components/schemas/Price'
+        priceAction:
+          $ref: '#/components/schemas/Price'
+        priceActionText:
+          type: string
+          example: 'Текст акции'
+        floor:
+          description: 'Этаж квартиры'
+          type: number
+          format: integer
+          example: 3
+        totalFloors:
+          description: 'Этажность здания'
+          type: number
+          format: integer
+          example: 9
+        rooms:
+          description: 'Комнатность квартиры'
+          type: string
+          example: '3 комн.'
+        area:
+          description: 'Площадь квартиры'
+          type: number
+          format: float
+          example: 56.36
+        number:
+          description: 'Номер квартиры'
+          type: number
+          format: integer
+          example: 32
+      type: object
+    PageIndexFlat:
+      description: 'Class PageIndexFlatView'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        link:
+          $ref: '#/components/schemas/Link'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageIndexFlatItem'
+      type: object
+    PageIndexInfrastructureGroupItem:
+      description: 'Class PageIndexInfrastructureGroupItemView'
+      properties:
+        id:
+          $ref: '#/components/schemas/Id'
+        header:
+          $ref: '#/components/schemas/Header'
+        icon:
+          $ref: '#/components/schemas/Image'
+        items:
+          description: 'Объект инфраструктуры'
+          type: array
+          items:
+            properties:
+              header:
+                $ref: '#/components/schemas/Header'
+              description:
+                $ref: '#/components/schemas/Description'
+              address:
+                $ref: '#/components/schemas/Text'
+              latitude:
+                type: number
+                format: float
+              longitude:
+                type: number
+                format: float
+            type: object
+      type: object
+    PageIndexInfrastructure:
+      description: 'Class PageIndexInfrastructureView'
+      properties:
+        headerTop:
+          $ref: '#/components/schemas/Header'
+        headerBottom:
+          $ref: '#/components/schemas/Header'
+        map:
+          $ref: '#/components/schemas/Map'
+        buildingIcon:
+          $ref: '#/components/schemas/Image'
+        buildingLatitude:
+          type: number
+          format: float
+        buildingLongitude:
+          type: number
+          format: float
+        groups:
+          description: 'Группы инфраструктуры'
+          type: array
+          items:
+            $ref: '#/components/schemas/PageIndexInfrastructureGroupItem'
+      type: object
+    PageIndexReasonItem:
+      description: 'Class PageIndexReasonItemView'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        text:
+          $ref: '#/components/schemas/Text'
+        image:
+          $ref: '#/components/schemas/Image'
+      type: object
+    PageIndexSlideItem:
+      description: 'Class PageIndexSlideView'
+      properties:
+        image:
+          $ref: '#/components/schemas/Image'
+        header:
+          $ref: '#/components/schemas/Header'
+        description:
+          $ref: '#/components/schemas/Description'
+        link:
+          $ref: '#/components/schemas/Link'
+        liveBroadcast:
+          $ref: '#/components/schemas/Link'
+      type: object
+    PageIndex:
+      description: 'Class PageIndexView'
+      properties:
+        slides:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageIndexSlideItem'
+        header:
+          $ref: '#/components/schemas/Header'
+        text:
+          $ref: '#/components/schemas/Text'
+        leftImage:
+          $ref: '#/components/schemas/Image'
+        rightImage:
+          $ref: '#/components/schemas/Image'
+        reasonHeaderTop:
+          $ref: '#/components/schemas/Header'
+        reasonHeaderBottom:
+          $ref: '#/components/schemas/Header'
+        reasons:
+          type: array
+          items:
+            $ref: '#/components/schemas/PageIndexReasonItem'
+        builder:
+          $ref: '#/components/schemas/PageIndexBuilder'
+        infrastructure:
+          $ref: '#/components/schemas/PageIndexInfrastructure'
+        flat:
+          $ref: '#/components/schemas/PageIndexFlat'
+        news:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsListItem'
+      type: object
+    PageLocation:
+      description: 'Class PageLocationView'
+      properties:
+        header:
+          $ref: '#/components/schemas/Header'
+        howToGet:
+          type: array
+          items:
+            $ref: '#/components/schemas/HowToGetItem'
+        infrastructure:
+          $ref: '#/components/schemas/PageIndexInfrastructure'
+      type: object
+    Scripts:
+      description: 'Class ScriptsView'
+      properties:
+        head:
+          description: 'Скрипты в секции HEAD'
+          type: string
+          example: '<script></script>'
+        bodyOpen:
+          description: 'Скрипты после открывающегося тега BODY'
+          type: string
+          example: '<script></script>'
+        bodyClose:
+          description: 'Скрипты перед закрывающимся тегом BODY'
+          type: string
+          example: '<script></script>'
+      type: object
+    SocialNetwork:
+      description: 'Class SocialNetworkView'
+      properties:
+        icon:
+          $ref: '#/components/schemas/Image'
+        url:
+          $ref: '#/components/schemas/URI'
+      type: object
+    Id:
+      description: 'ID объекта'
+      type: integer
+      example: 12
+    Header:
+      description: Заголовок
+      type: string
+      example: 'Мой заголовок!'
+    Name:
+      description: 'Какое то имя или название'
+      type: string
+      example: 'Браун Хаус'
+    SubHeader:
+      description: Подзаголовок
+      type: string
+      example: 'Мой подзаголовок!'
+    Description:
+      description: Описание
+      type: string
+      example: 'Какое-то краткое описание..'
+    Text:
+      description: Текст
+      type: string
+      example: 'Какой-то длинный текст, или даже HTML..'
+    Path:
+      description: Путь
+      type: string
+      example: my_object_path
+    Price:
+      description: Цена
+      type: number
+      example: '1200000'
+    URI:
+      description: URI
+      type: string
+      format: uri
+      example: 'https://vk.com'
+    Phone:
+      description: Телефон
+      type: string
+      example: '+7 (812) 123-45-67'
+    Date:
+      description: Дата
+      type: string
+      format: date
+      example: '2021-02-23'
+    DateTime:
+      description: 'Дата и время'
+      type: string
+      format: date-time
+      example: '2021-07-21T17:32:28Z'
+    Image:
+      description: Изображение
+      type: string
+      format: uri
+      example: 'https://somesite.info/some_image.jpg'
+    File:
+      description: Файл
+      type: string
+      format: uri
+      example: 'https://somesite.info/some_file.pdf'
+    Email:
+      description: Email
+      type: string
+      format: email
+      example: example@example.com
+    Success:
+      properties:
+        success:
+          type: boolean
+          example: true
+      type: object
+    Number:
+      description: 'Какой-то номер'
+      type: number
+      format: integer
+      example: 1
+    Rooms:
+      enum:
+        - s
+        - '1'
+        - '2'
+        - '3'
+    Statuses:
+      enum:
+        - free
+        - sold
+        - reserved
+    ErrorNotFound:
+      description: 'Не найдено'
+      properties:
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: 'Объект не найден'
+      type: object
+    ErrorCritical:
+      description: 'Непредвиденная ошибка'
+      properties:
+        status:
+          type: integer
+          example: 500
+        message:
+          type: string
+          example: 'Непредвиденная ошибка'
+      type: object
+    ErrorBadRequest:
+      description: 'Плохой запрос'
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: 'Некорректный запрос'
+      type: object
+  parameters:
+    metatag_uri:
+      name: url
+      in: query
+      description: 'URI страницы'
+      required: true
+      schema:
+        type: string
+      example: /contacts
+    id:
+      name: id
+      in: path
+      description: 'ID объекта'
+      required: true
+      schema:
+        type: integer
+        format: int64
+      example: 21
+    path:
+      name: path
+      in: path
+      description: 'Путь объекта'
+      required: true
+      schema:
+        type: string
+      example: my_true_object_path
+    number:
+      name: number
+      in: path
+      description: 'Номер объекта'
+      required: true
+      schema:
+        type: string
+      example: '1'
+    flatNumber:
+      name: number
+      in: path
+      description: 'Номер квартиры'
+      required: true
+      schema:
+        type: numeric
+      example: 25
+    floorNumber:
+      name: number
+      in: path
+      description: 'Номер этажа'
+      required: true
+      schema:
+        type: numeric
+      example: 3
+    token:
+      name: token
+      in: query
+      description: 'Токен пользователя'
+      required: true
+      schema:
+        type: string
+    id_query:
+      name: id
+      in: query
+      description: 'ID объекта'
+      required: true
+      schema:
+        type: integer
+        format: int64
+      example: 21
+    email:
+      name: email
+      in: query
+      description: 'Email пользователя'
+      required: true
+      schema:
+        type: string
+        format: email
+    phone:
+      name: phone
+      in: query
+      description: 'Телефон пользователя'
+      required: true
+      schema:
+        type: string
+      example: '+71234567890'
+    rooms:
+      name: rooms
+      in: query
+      description: Комнатность
+      required: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Rooms'
+      example: '[''s'', 1]'
+    priceMin:
+      name: priceMin
+      in: query
+      description: 'Цена от'
+      required: false
+      schema:
+        type: numeric
+        format: integer
+      example: 1000000
+    priceMax:
+      name: priceMax
+      in: query
+      description: 'Цена до'
+      required: false
+      schema:
+        type: numeric
+        format: integer
+      example: 1200000
+    areaMin:
+      name: areaMin
+      in: query
+      description: 'Площадь от'
+      required: false
+      schema:
+        type: numeric
+        format: float
+      example: 35.6
+    areaMax:
+      name: areaMax
+      in: query
+      description: 'Площадь до'
+      required: false
+      schema:
+        type: numeric
+        format: float
+      example: 56.8
+    floorMin:
+      name: floorMin
+      in: query
+      description: 'Этаж от'
+      required: false
+      schema:
+        type: numeric
+        format: integer
+      example: 4
+    floorMax:
+      name: floorMax
+      in: query
+      description: 'Этаж до'
+      required: false
+      schema:
+        type: numeric
+        format: integer
+      example: 8
+    sortField:
+      name: sortField
+      in: query
+      description: 'Поле сортировки'
+      required: false
+      schema:
+        type: string
+        enum:
+          - rooms
+          - area
+          - floor
+          - price
+      example: price
+    sortOrder:
+      name: sortOrder
+      in: query
+      description: 'Порядок сортировки'
+      required: false
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+      example: asc
+    statuses:
+      name: statuses
+      in: query
+      description: 'Статусы квартир'
+      required: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/Statuses'
+      example: '[''free'', ''reserved'']'
+    limit:
+      name: limit
+      in: query
+      description: 'Количество записей'
+      required: true
+      schema:
+        type: number
+        format: integer
+      example: 15
+    offset:
+      name: offset
+      in: query
+      description: 'Запись от которой выбираются следующие'
+      required: true
+      schema:
+        type: number
+        format: integer
+      example: 10
+    before:
+      name: before
+      in: query
+      description: 'Количество предыдущих записей'
+      required: false
+      schema:
+        type: number
+        format: integer
+      example: 10
+    after:
+      name: after
+      in: query
+      description: 'Количество следующих записей'
+      required: false
+      schema:
+        type: number
+        format: integer
+      example: 10

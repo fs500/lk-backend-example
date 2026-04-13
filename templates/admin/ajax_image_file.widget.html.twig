@@ -1,0 +1,41 @@
+{% block ajax_file_widget %}
+    {% apply spaceless %}
+        <div class="ajax-file">
+            <label class="ajax-file_label btn btn-light">
+                Выберите файл
+                <input type="file" data-url="{{ upload_url }}" class="ajax-file_file" onchange="$(this).ajaxUpload();" />
+            </label>
+            <div class="uploaded_data pt-1" {{ download_label == '' ? ' style="display:none;"' : ''}}>
+                {% if show_thumbnail %}
+                    <div>
+                        <a href="{{ download_uri }}" class="ajax-file_link" target="_blank">
+                            {% if thumbnail == false %}
+                                Файл
+                            {% else %}
+                                <img class="ajax-file_thumbnail" src="{{ thumbnail }}"/>
+                            {% endif %}
+                        </a>
+                    </div>
+                {% endif %}
+                {% if show_thumbnail == false %}
+                <div class="checkbox">
+                    <a href="{{ download_uri }}" class="ajax-file_link" target="_blank">Файл</a>
+                </div>
+                {% endif %}
+                {% if form.delete is defined %}
+                    {{ form_widget(form.delete) }}
+                {% endif %}
+
+            </div>
+            {{ form_widget(form.originalFilename) }}
+            {{ form_widget(form.filename) }}
+            {{ form_widget(form.token) }}
+            <span class="invalid-feedback">
+                <span class="d-block">
+                    <span class="form-error-icon badge badge-danger text-uppercase">Ошибка</span>
+                    <span class="form-error-message">Значение недопустимо.</span>
+                </span>
+            </span>
+        </div>
+    {% endapply %}
+{% endblock %}

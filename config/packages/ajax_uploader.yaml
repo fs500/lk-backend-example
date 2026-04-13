@@ -1,0 +1,2 @@
+ajax_uploader:
+    upload_route: "ajax_uploader_file_handler"

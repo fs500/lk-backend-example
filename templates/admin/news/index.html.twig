@@ -1,0 +1,49 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var news App\Entity\News[] #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content_header_title %}Новости{% endblock %}
+
+{% block page_actions %}<a class="action-new btn btn-primary btn-sm" href="{{ path('admin_news_new') }}">Добавить</a>{% endblock %}
+
+{% block body %}
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Заголовок</th>
+                <th>Дата</th>
+                <th>Фотография</th>
+                <th class="list-options"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for n in news %}
+            <tr>
+                <td>{{ n.header }}</td>
+                <td>{{ n.date ? n.date|date('d.m.Y') : '' }}</td>
+                <td>
+                    {% if n.image %}
+                        <a href="{{ vich_uploader_asset(n, 'imageFile') }}" target="_blank">
+                            <img src="{{ vich_uploader_asset(n, 'imageFile') | imagine_filter('admin_show') }}" alt="">
+                        </a>
+                    {% endif %}
+                </td>
+                <td class="list-actions">
+                    <a class="fa fa-icons fa-pencil-square-o list-edit-button" href="{{ path('admin_news_edit', {'id': n.id}) }}"></a>
+                    <a class="fas fa-eye list-detail-button" href="{{ path('admin_news_show', {'id': n.id}) }}"></a>
+                    <a class="fas fa-trash-alt list-remove-button" data-id="{{ n.id }}" href="{{ path('admin_news_delete', {'id': n.id}) }}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form class="delete-form" method="post" data-action="{{ path('admin_news_delete', {'id': '__id__'}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endblock %}

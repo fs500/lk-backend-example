@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('login') }}
+    {% endblock %}
+</head>
+<body class="page-login">
+<div class="login-wrapper">
+    <header class="main-header mb-4">
+        <div id="header-logo">
+            <div class="logo">
+                {% block body_header %}{% endblock %}
+            </div>
+        </div>
+    </header>
+    <section class="content">
+        {% block body %}{% endblock %}
+    </section>
+</div>
+{% block javascripts %}
+    {{ encore_entry_script_tags('login') }}
+{% endblock %}
+</body>
+</html>

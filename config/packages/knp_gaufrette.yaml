@@ -1,0 +1,9 @@
+knp_gaufrette:
+    stream_wrapper: ~
+    adapters:
+        ajax_upload:
+            local:
+                directory: '%kernel.project_dir%/public/uploads/ajax'
+    filesystems:
+        temp_ajax_upload:
+            adapter: ajax_upload

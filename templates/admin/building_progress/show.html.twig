@@ -1,0 +1,43 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var building_progresses App\Entity\BuildingProgress #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Ход строительства{% endblock %}
+
+{% block content_header_title %}Ход строительства{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_building_progress_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_building_progress_edit', {'id': building_progress.id }) }}">Редактировать</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin') }}
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ building_progress.id }}</td>
+            </tr>
+            <tr>
+                <th>Краткое описание</th>
+                <td>{{ building_progress.description }}</td>
+            </tr>
+            <tr>
+                <th>Дата</th>
+                <td>{{ building_progress.date ? building_progress.date|date('d.m.Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Фотографий</th>
+                <td>{{ building_progress.items|length }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

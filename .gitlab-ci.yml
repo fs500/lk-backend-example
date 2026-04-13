@@ -1,0 +1,51 @@
+deploy_review:
+  stage: deploy
+  tags:
+    - review
+  environment:
+    name: review/$CI_COMMIT_REF_SLUG
+    url: https://$DYNAMIC_ENVIRONMENT_URL
+  artifacts:
+    reports:
+      dotenv: deploy.env
+  script:
+    - export APP_IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - ansible-galaxy role install -r .ansible/requirements.yml
+    - ansible-galaxy collection install -r .ansible/requirements.yml
+    - ansible-playbook --connection=local -i 127.0.0.1, .ansible/playbook.yml -e 'ansible_python_interpreter=/usr/bin/python3'
+
+services:
+  - docker:19.03.8-dind
+
+deploy_prod:
+  stage: deploy
+  only:
+    - master
+  when: manual
+  image: quay.io/ansible/ansible-runner:latest
+  environment:
+    name: prod
+    url: https://brownhouse.ru/
+  script:
+    - export APP_IMAGE=$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - export ANSIBLE_HOST_KEY_CHECKING=False
+    - ansible-galaxy role install -r .ansible/requirements.yml
+    - ansible-galaxy collection install -r .ansible/requirements.yml
+    - chmod 600 $PROD_SSH_KEY
+    - ansible-playbook -i 172.16.3.127, .ansible/playbook.yml --private-key=$PROD_SSH_KEY -e 'ansible_python_interpreter=/usr/bin/python3'
+
+
+build:
+  stage: build
+  image: docker:19.03.8
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker pull $CACHE_IMAGE || true
+    - docker build --build-arg BUILDKIT_INLINE_CACHE=1 -f $CI_PROJECT_DIR/build/nginx-fpm/Dockerfile --cache-from=$CACHE_IMAGE -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA $CI_PROJECT_DIR
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  CACHE_IMAGE: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+  DOCKER_BUILDKIT: 1

@@ -1,0 +1,63 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var yandex_yml_offers App\Entity\YandexYmlOffer #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}YandexYmlOffer{% endblock %}
+
+{% block content_header_title %}YandexYmlOffer{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_yandex_yml_offer_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_yandex_yml_offer_edit', {'id': yandex_yml_offer.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ yandex_yml_offer.id }}</td>
+            </tr>
+            <tr>
+                <th>Фид</th>
+                <td>{{ yandex_yml_offer.shop }}</td>
+            </tr>
+            <tr>
+                <th>Название</th>
+                <td>{{ yandex_yml_offer.name }}</td>
+            </tr>
+            <tr>
+                <th>Квартира</th>
+                <td>{{ yandex_yml_offer.flat }}</td>
+            </tr>
+            <tr>
+                <th>Конверсия</th>
+                <td>{{ yandex_yml_offer.paramConversion }}</td>
+            </tr>
+            <tr>
+                <th>Описание</th>
+                <td>{{ yandex_yml_offer.description }}</td>
+            </tr>
+            <tr>
+                <th>Минимальная ипотека</th>
+                <td>{{ yandex_yml_offer.paramMinMortgage }}</td>
+            </tr>
+            <tr>
+                <th>Класс жилья</th>
+                <td>{{ yandex_yml_offer.paramEstateClass ? yandex_yml_offer.paramEstateClass|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Свободная планировка</th>
+                <td>{{ yandex_yml_offer.paramFreePlan ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Отделка</th>
+                <td>{{ yandex_yml_offer.paramFinishing ? yandex_yml_offer.paramFinishing|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Ремонт</th>
+                <td>{{ yandex_yml_offer.paramRepair ? yandex_yml_offer.paramRepair|join(', ') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

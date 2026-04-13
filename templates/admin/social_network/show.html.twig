@@ -1,0 +1,31 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var social_networks App\Entity\SocialNetwork #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Социальная сеть{% endblock %}
+
+{% block content_header_title %}Социальная сеть{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_social_network_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_social_network_edit', {'id': social_network.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ social_network.id }}</td>
+            </tr>
+            <tr>
+                <th>Социальная сеть</th>
+                <td>{{ social_network.type }}</td>
+            </tr>
+            <tr>
+                <th>URL группы</th>
+                <td>{{ social_network.url }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,51 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var documents App\Entity\Document #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Документ{% endblock %}
+
+{% block content_header_title %}Документ{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_document_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_document_edit', {'id': document.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ document.id }}</td>
+            </tr>
+            <tr>
+                <th>Дата документа</th>
+                <td>{{ document.date ? document.date|date('d.m.Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Тип документа</th>
+                <td>{{ document.type }}</td>
+            </tr>
+            <tr>
+                <th>Размер документа (байт)</th>
+                <td>{{ document.size }}</td>
+            </tr>
+            <tr>
+                <th>Имя менеджера</th>
+                <td>{{ document.name }}</td>
+            </tr>
+            <tr>
+                <th>Название документа</th>
+                <td>{{ document.header }}</td>
+            </tr>
+            <tr>
+                <th>Файл</th>
+                <td>
+                    {% if document.file %}
+                        <a href="{{ vich_uploader_asset(document, 'uploadedFile') }}" target="_blank">скачать</a>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

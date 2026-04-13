@@ -1,0 +1,99 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var flats App\Entity\Flat #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Квартира{% endblock %}
+
+{% block content_header_title %}Квартира{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_flat_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_flat_edit', {'id': flat.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ flat.id }}</td>
+            </tr>
+            <tr>
+                <th>Этаж</th>
+                <td>{{ flat.floor }}</td>
+            </tr>
+            <tr>
+                <th>Статус</th>
+                <td>{{ flat.statusHeader }}</td>
+            </tr>
+            <tr>
+                <th>Номер</th>
+                <td>{{ flat.number }}</td>
+            </tr>
+            <tr>
+                <th>Планировка</th>
+                <td>
+                    {% if flat.plan %}
+                        <a href="{{ vich_uploader_asset(flat, "planFile") }}" target="_blank">просмотр</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Планировка (png)</th>
+                <td>
+                    {% if flat.convertedPlan %}
+                        <a href="{{ vich_uploader_asset(flat, "convertedPlanFile") }}" target="_blank">просмотр</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Планировка 3d</th>
+                <td>
+                    {% if flat.plan3d %}
+                        <a href="{{ vich_uploader_asset(flat, "plan3dFile") }}" target="_blank">просмотр</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Комнатность</th>
+                <td>{{ flat.roomsHeader }}</td>
+            </tr>
+            <tr>
+                <th>Площадь</th>
+                <td>{{ flat.area }}</td>
+            </tr>
+            <tr>
+                <th>Площадь комнат</th>
+                <td>{{ flat.roomsArea }}</td>
+            </tr>
+            <tr>
+                <th>Площадь кухни</th>
+                <td>{{ flat.kitchenArea }}</td>
+            </tr>
+            <tr>
+                <th>Высота потолков</th>
+                <td>{{ flat.ceilingHeight }}</td>
+            </tr>
+            <tr>
+                <th>Цена</th>
+                <td>{{ flat.price }}</td>
+            </tr>
+            <tr>
+                <th>Цена за метр</th>
+                <td>{{ flat.priceM }}</td>
+            </tr>
+            <tr>
+                <th>Цена с отделкой</th>
+                <td>{{ flat.priceFinish }}</td>
+            </tr>
+            <tr>
+                <th>Цена с отделкой за метр</th>
+                <td>{{ flat.priceFinishM }}</td>
+            </tr>
+            <tr>
+                <th>Цена по акции</th>
+                <td>{{ flat.priceAction }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

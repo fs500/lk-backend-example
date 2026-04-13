@@ -1,0 +1,19 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('form') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('form') }}
+{% endblock %}
+
+{% block title %}Редактирование шаблона цен{% endblock %}
+
+{% block content_header_title %}Редактирование шаблона цен{% endblock %}
+
+{% block body %}
+    {{ include('admin/flat_price/_form.html.twig', {'button_label': 'Сохранить'}) }}
+{% endblock %}

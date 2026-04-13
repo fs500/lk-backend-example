@@ -1,0 +1,60 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var flat_prices App\Entity\FlatPrice[] #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('priceUpdater') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin') }}
+{% endblock %}
+
+
+{% block title %}Обновление цен{% endblock %}
+
+{% block content_header_title %}Обновление цен{% endblock %}
+
+{% block page_actions %}
+    <a style="white-space: nowrap" class="action-refresh btn btn-secondary btn-sm" href="{{ path('admin_flat_price_refresh') }}">
+        <i class="fa fa-refresh fa-spin1 fa-fw"></i>
+        <span>Обновить цены</span>
+    </a>
+    <a class="action-new btn btn-primary btn-sm" href="{{ path('admin_flat_price_new') }}">Добавить</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Этажи</th>
+                <th>Комнатность</th>
+                <th>Цена за кв. м.</th>
+                <th>Дата обновления</th>
+                <th class="list-options"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for flat_price in flat_prices %}
+            <tr>
+                <td>{{ flat_price.floors ? flat_price.floors|join(', ') : '' }}</td>
+                <td>{{ flat_price.rooms ? flat_price.roomsDescription|join('<br>')|raw : '' }}</td>
+                <td>{{ flat_price.price }}</td>
+                <td class="update-date-field">{{ flat_price.date ? flat_price.date.format("d.m.Y H:i") : '' }}</td>
+                <td class="list-actions">
+                    <a class="fa fa-icons fa-pencil-square-o list-edit-button" href="{{ path('admin_flat_price_edit', {'id': flat_price.id}) }}"></a>
+                    <a class="fas fa-eye list-detail-button" href="{{ path('admin_flat_price_show', {'id': flat_price.id}) }}"></a>
+                    <a class="fas fa-trash-alt list-remove-button" data-id="{{ flat_price.id }}" href="{{ path('admin_flat_price_delete', {'id': flat_price.id}) }}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form class="delete-form" method="post" data-action="{{ path('admin_flat_price_delete', {'id': '__id__'}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endblock %}

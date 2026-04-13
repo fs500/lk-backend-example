@@ -1,0 +1,23 @@
+vich_uploader:
+    db_driver: orm
+    mappings:
+        files:
+            uri_prefix:         '%app.path.files%'
+            upload_destination: '%kernel.project_dir%/public%app.path.files%'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        temp_ajax:
+            uri_prefix:         '%app.path.temp%'
+            upload_destination: '%kernel.project_dir%/public%app.path.temp%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+        images:
+            uri_prefix:         '%app.path.images%'
+            upload_destination: '%kernel.project_dir%/public%app.path.images%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+        converted:
+            uri_prefix:         '%app.path.converted%'
+            upload_destination: '%kernel.project_dir%/public%app.path.converted%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer
+        setting:
+            uri_prefix:         '%app.path.setting%'
+            upload_destination: '%kernel.project_dir%/public%app.path.setting%'
+            namer: Vich\UploaderBundle\Naming\UniqidNamer

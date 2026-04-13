@@ -1,0 +1,25 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('form') }}
+    {{ encore_entry_script_tags('admin') }}
+    {{ encore_entry_script_tags('ajaxImageCollection') }}
+    {{ encore_entry_script_tags('ajaxuploader') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('form') }}
+    {{ encore_entry_link_tags('admin') }}
+    {{ encore_entry_link_tags('ajaxImageCollection') }}
+    {{ encore_entry_link_tags('ajaxuploaderCss') }}
+{% endblock %}
+
+{% block title %}Добавление хода строительства{% endblock %}
+
+{% block content_header_title %}Добавление хода строительства{% endblock %}
+
+{% block body %}
+    {{ include('admin/building_progress/_form.html.twig', { button_label: 'Добавить'}) }}
+{% endblock %}

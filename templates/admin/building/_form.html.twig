@@ -1,0 +1,13 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+
+{% form_theme form with [
+    '@EyeAdmin/Form/form_theme.html.twig',
+    'admin/ajax_file.html.twig',
+    'admin/ajax_image_file.widget.html.twig',
+] %}
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-success">{{ button_label|default('Сохранить') }}</button>
+    <a class="btn btn-light" href="{{ path('admin_building_index') }}">Назад</a>
+{{ form_end(form) }}

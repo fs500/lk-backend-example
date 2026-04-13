@@ -1,0 +1,24 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('form') }}
+    {{ encore_entry_script_tags('admin') }}
+    {{ encore_entry_script_tags('ajaxuploader') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('form') }}
+    {{ encore_entry_link_tags('admin') }}
+    {{ encore_entry_link_tags('ajaxuploaderCss') }}
+{% endblock %}
+
+
+{% block title %}Редактирование новости{% endblock %}
+
+{% block content_header_title %}Редактирование новости{% endblock %}
+
+{% block body %}
+    {{ include('admin/news/_form.html.twig', {'button_label': 'Сохранить'}) }}
+{% endblock %}

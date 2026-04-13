@@ -1,0 +1,39 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Пользователь{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_user_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_user_edit', {'id': user.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block content_header_title %}Пользователь{% endblock %}
+
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ user.id }}</td>
+            </tr>
+            <tr>
+                <th>Имя пользователя</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>Роли</th>
+                <td>{{ user.roles ? user.rolesDescription : '' }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <th>Добавлен</th>
+                <td>{{ user.created ? user.created|date('d.m.Y H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

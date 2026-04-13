@@ -1,0 +1,19 @@
+.dropbox-file-block .dropbox-file-zone{
+    width: 100%;
+    height: 200px;
+    border: 2px solid rgba(238,162,54, 0.5);
+    border-radius: 6px;
+    margin-bottom: 20px;
+    background: rgba(240,173,78, 0.1);
+    cursor: pointer;
+}
+.dropbox-file-block .dropbox-file-zone:after{
+    display: block;
+    content: "Перетащите файл\0aили кликните для загрузки";
+    text-align: center;
+    margin-top: 50px;
+    color: rgba(238,162,54, 0.5);
+    font-size: 30px;
+    white-space: pre;
+
+}

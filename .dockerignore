@@ -1,0 +1,5 @@
+docker-compose.yml
+var/
+.idea/
+vendor/
+.env.local

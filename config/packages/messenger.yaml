@@ -1,0 +1,13 @@
+framework:
+    messenger:
+        transports:
+            amqp_pdf_notification:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange:
+                        name: pdf_notifications
+                        type: fanout
+                    queues:
+                        pdf: ~
+        routing:
+            App\Message\PDFNotification: amqp_pdf_notification

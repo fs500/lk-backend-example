@@ -1,0 +1,2 @@
+* 0 * * * /www/app/bin/console app:pdf
+* 0 * * * /www/app/bin/console ajax_uploader:clean 1 -q

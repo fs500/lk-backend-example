@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Квартира № {{ flat.number }}</title>
+    <style>
+        {# не менять эту директиву и не удалять, если не знаете что с ней делать #}
+        @page {
+            margin: 0;
+            odd-footer-name: html_footer;
+            even-footer-name: html_footer;
+            odd-header-name: html_header;
+            even-header-name: html_header;
+        }
+        {# пример подключения шрифтов, подключаются в классе App\Services\Pdf #}
+        @font-face {
+            font-family: 'Inter';
+            src:
+                    url('/fonts/interregular.woff') format('woff'),
+                    url('/fonts/interregular.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Optima Cyr';
+            src:
+                    url('/fonts/optimacyrregular.woff') format('woff'),
+                    url('/fonts/optimacyrregular.ttf') format('truetype');
+            font-weight: 500;
+            font-style: normal;
+        }
+        p {
+            margin: 0;
+        }
+        ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .clearfix::after {
+            content: "";
+            display: block;
+            clear: both;
+            height: 0;
+        }
+        .header {
+            padding-top: 18pt;
+            padding-right: 24pt;
+            padding-left: 24pt;
+        }
+        .header__logo {
+            float: left;
+            width: 52pt;
+        }
+        .header__logo img {
+            max-width: 100%;
+        }
+        .header__title {
+            float: right;
+            width: 96pt;
+        }
+        .header__title-title {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 10pt;
+            line-height: 140%;
+            text-align: left;
+            color: #A29B8E;
+        }
+        .header__title-name {
+            font-family: 'Optima Cyr';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 12pt;
+            line-height: 140%;
+            text-transform: uppercase;
+            color: #412923;
+        }
+        .main__title {
+            padding-top: 50pt;
+            font-family: 'Optima Cyr';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18pt;
+            line-height: 120%;
+            text-align: center;
+            text-transform: uppercase;
+            color: #CC9268;
+        }
+        .main__infoplan {
+            padding-top: 24pt;
+        }
+        .main__infoplan-plan {
+            float: left;
+            width: 358pt;
+            height: 358pt;
+            padding-left: 24pt;
+            text-align: center;
+            line-height: 358pt;
+        }
+        .main__infoplan-info {
+            float: right;
+            padding-left: 20pt;
+        }
+        .info__title {
+            font-family: 'Optima Cyr';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 10pt;
+            line-height: 140%;
+            text-transform: uppercase;
+            color: #A29B8E;
+        }
+        .info__desc {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 15pt;
+            line-height: 140%;
+            color: #412923;
+            margin-bottom: 16pt;
+        }
+        .main__mapplan {
+            padding-top: 20pt;
+            padding-bottom: 30pt;
+        }
+        .main__mapplan-map {
+            float: left;
+            width: 370px;
+            padding-left: 44pt;
+        }
+        .main__mapplan-compass {
+            float: right;
+            padding-right: 125pt;
+            width: 74pt;
+        }
+        .main__mapplan-compass img{
+            width: 100%
+        }
+        .main__mapplan-map img{
+            max-width: 100%;
+        }
+        .footer {
+            padding: 0 24pt 20pt 24pt;
+        }
+        .footer__wrapper {
+            border-top: 1pt solid #E9E6E0;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 11pt;
+            line-height: 140%;
+            color: #412923;
+            padding: 10pt 0;
+        }
+        .footer__wrapper a{
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 11pt;
+            color: #412923;
+            text-decoration: none;
+        }
+        .footer__sell {
+            float: left;
+            width: 107pt;
+        }
+        .footer__title {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 10pt;
+            line-height: 140%;
+            color: #A29B8E;
+            padding-bottom: 4pt;
+        }
+        .footer__address {
+            width: 215pt;
+            float: left;
+            padding-left: 83pt;
+        }
+        .footer__site {
+            float: right;
+            width: 78pt;
+            padding-right: 17pt;
+        }
+        .footer__legal,
+        .footer__legal a{
+            color: #A19B8E;
+        }
+        .footer__legal a{
+            text-decoration: none;
+        }
+        .main__title1, .main__title1-benefits {
+            padding-top: 50pt;
+            font-family: 'Optima Cyr';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14pt;
+            line-height: 120%;
+            text-align: center;
+            text-transform: uppercase;
+            color: #A29B8E;
+            margin-bottom: 16pt;
+        }
+        .main__title1-benefits {
+            padding-top: 0;
+        }
+        .main__address1 {
+            font-family: 'Optima Cyr';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14pt;
+            line-height: 120%;
+            text-align: center;
+            text-transform: uppercase;
+            color: #412923;
+            margin-bottom: 16pt;
+        }
+        .main__images1 {
+            padding-right: 24pt;
+            padding-left: 24pt;
+            margin-bottom: 24pt;
+        }
+        .main__images1 img {
+            max-width: 100%;
+        }
+        .main__infoblock {
+            padding: 0 24pt;
+            margin-bottom: 15pt;
+        }
+        .main__infoblock-left {
+            width: 50%;
+            float: left;
+        }
+        .main__infoblock-item {
+            margin-bottom: 16px;
+        }
+        .main__infoblock-item_img {
+            float: left;
+            width: 9%;
+        }
+        .main__infoblock-item_img img {
+            width: 100%;
+        }
+        .main__infoblock-item_text {
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 11pt;
+            line-height: 140%;
+            color: #412923;
+            float: right;
+            width: 233pt;
+        }
+        .main__infoblock-rigth {
+            width: 50%;
+            float: right;
+        }
+        .main__infoblock-item_text.desc {
+            color: #A29B8E;
+        }
+        .main__benefits {
+            padding: 0 24pt;
+        }
+        .main__benefits-left {
+            float: left;
+            width: 50%;
+        }
+        .main__benefits-item {
+            margin-bottom: 16pt;
+        }
+        .main__benefits-item_img {
+            float: left;
+            width: 9%;
+            height: 18pt;
+        }
+        .main__benefits-item_img img{
+            max-width: 100%;
+        }
+        .main__benefits-item_text {
+            float: right;
+            width: 236pt;
+            font-family: 'Inter';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 11pt;
+            line-height: 140%;
+            color: #412923;
+            padding-top: 5pt;
+        }
+        .main__benefits-right {
+            float: right;
+            width: 50%;
+        }
+        .main__title2 {
+            padding-top: 50pt;
+            font-family: 'Optima Cyr';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14pt;
+            line-height: 120%;
+            text-align: center;
+            text-transform: uppercase;
+            color: #A29B8E;
+            margin-bottom: 16pt;
+        }
+        .main__name2 {
+            font-family: 'Optima Cyr';
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14pt;
+            line-height: 120%;
+            text-align: center;
+            text-transform: uppercase;
+            color: #412923;
+            margin-bottom: 16pt;
+        }
+        .main__wrapper2 {
+            padding: 0 24pt;
+        }
+        .main__wrapper2-left {
+            float: left;
+
+            width: 50%;
+        }
+        .main__wrapper2-item {
+            padding-bottom: 16pt;
+            padding: 0 10pt 16pt 10pt;
+        }
+        .main__wrapper2-item img {
+            width: 263pt;
+            height: 148pt;
+            max-width: 100%;
+            padding: 0 10pt;
+            margin: 10pt;
+        }
+        .main__wrapper2-right {
+            float: right;
+            width: 50%;
+        }
+        .main__img2 {
+            text-align: center;
+            width: 58pt;
+            height: 58pt;
+            margin: auto;
+        }
+        .main__img2 img{
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+<htmlpageheader name="header">
+    <header class="header clearfix">
+        <div class="header__logo">
+            {% if building.logo %}
+                {% if contacts.site %}
+                    <a href="{{ contacts.siteUrl }}"><img src="{{ httpHost }}{{ vich_uploader_asset(building, 'logoFile') }}" alt=""></a>
+                {% else %}
+                    <img src="{{ httpHost }}{{ vich_uploader_asset(building, 'logoFile') }}" alt="">
+                {% endif %}
+            {% else %}
+                {% if contacts.site %}
+                    <a href="{{ contacts.siteUrl }}"><img src="{{ httpHost }}/images/logo.svg" alt=""></a>
+                {% else %}
+                    <img src="{{ httpHost }}/images/logo.svg" alt="">
+                {% endif %}
+            {% endif %}
+        </div>
+    </header>
+</htmlpageheader>
+<main class="main">
+    <div class="main__wrapper">
+        <div class="main__title">{{ flat.roomsFullHeader }}</div>
+        <div class="main__infoplan clearfix">
+            {% if flat.plan %}
+            <div class="main__infoplan-plan">
+                <img src="{{ httpHost }}{{ path('flat_plan', {number: flat.number}) }}" alt="{{ flat.number }}"  style="max-width: 542px; max-height: 455px;">
+            </div>
+            {% endif %}
+            <div class="main__infoplan-info">
+                {% if flat.area %}
+                <div class="main__infoplan-info_full-area">
+                    <p class="info__title">общая площадь</p>
+                    <p class="info__desc">{{ flat.area }} м²</p>
+                </div>
+                {% endif %}
+                {% if flat.roomsArea %}
+                <div class="main__infoplan-info_apart-area">
+                    <p class="info__title">Площадь комнат</p>
+                    <p class="info__desc">{{ flat.roomsArea }} м²</p>
+                </div>
+                {% endif %}
+                {% if flat.kitchenArea %}
+                <div class="main__infoplan-info_kitchen-area">
+                    <p class="info__title">Площадь кухни</p>
+                    <p class="info__desc">{{ flat.kitchenArea }} м²</p>
+                </div>
+                {% endif %}
+                {% if flat.priceFinish %}
+                <div class="main__infoplan-info_full-price">
+                    <p class="info__title">При 100% оплате и ипотеке,<br>с отделкой</p>
+                    <p class="info__desc">{{ flat.formattedPriceFinish }} руб.</p>
+                </div>
+                {% elseif flat.price %}
+                <div class="main__infoplan-info_full-price">
+                    <p class="info__title">При 100% оплате и ипотеке</p>
+                    <p class="info__desc">{{ flat.formattedPrice }} руб.</p>
+                </div>
+                {% endif %}
+                {% if flat.floor %}
+                <div class="main__infoplan-info_floor">
+                    <p class="info__title">Этаж</p>
+                    <p class="info__desc">{{ flat.floor.number }} / {{ floors }}</p>
+                </div>
+                {% endif %}
+                {% if building.deadline %}
+                <div class="main__infoplan-info_data">
+                    <p class="info__title">срок сдачи</p>
+                    <p class="info__desc">сдан</p>
+                </div>
+                {% endif %}
+                <div class="main__infoplan-info_height">
+                    <p class="info__title">высота потолков</p>
+                    <p class="info__desc">2,7 м</p>
+                </div>
+            </div>
+        </div>
+        <div class="main__mapplan clearfix">
+            <div class="main__mapplan-map">
+                <img src="{{ httpHost }}{{ path('floor_plan', {number: flat.number}) }}" alt="{{ flat.floor ? flat.floor.number : "" }}">
+            </div>
+            <div class="main__mapplan-compass">
+                <img src="{{ httpHost }}/images/compass.svg" alt="">
+            </div>
+        </div>
+    </div>
+    <pagebreak/>
+    <div class="main__title1">На карте</div>
+    <div class="main__address1">{{ contacts.objectAddress }}</div>
+    <div class="main__images1">
+        {% if building.mapImage %}
+            <img src="{{ httpHost }}{{ vich_uploader_asset(building, 'mapImageFile') }}" alt="">
+        {% else %}
+            <img src="{{ httpHost }}/images/street-map.png" alt="">
+        {% endif %}
+    </div>
+    <div class="main__wrapper">
+        <div class="main__infoblock clearfix">
+            <div class="main__infoblock-left">
+                {% for placement in placementsLeft %}
+                <div class="main__infoblock-item clearfix">
+                    <div class="main__infoblock-item_img">
+                        {% if placement.icon %}
+                        <img src="{{ httpHost }}{{ vich_uploader_asset(placement, 'iconFile') }}" alt="{{ placement.header }}">
+                        {% endif %}
+                    </div>
+                    {% if placement.header %}
+                    <div class="main__infoblock-item_text">{{ placement.header }}</div>
+                    {% endif %}
+                    {% if placement.description %}
+                        <p class="main__infoblock-item_text desc">{{ placement.description }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="main__infoblock-rigth">
+                {% for placement in placementsRight %}
+                <div class="main__infoblock-item clearfix">
+                    <div class="main__infoblock-item_img">
+                        {% if placement.icon %}
+                        <img src="{{ httpHost }}{{ vich_uploader_asset(placement, 'iconFile') }}" alt="{{ placement.header }}">
+                        {% endif %}
+                    </div>
+                    <div class="main__infoblock-item_text">
+                        {% if placement.header %}
+                        <p class="main__infoblock-item_text">{{ placement.header }}</p>
+                        {% endif %}
+                        {% if placement.description %}
+                        <p class="main__infoblock-item_text desc">{{ placement.description }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% if advantagesLeft|length > 0 %}
+        <div class="main__title1-benefits">Преимущества ЖК</div>
+        <div class="main__benefits clearfix">
+            <div class="main__benefits-left">
+                {% for advantage in advantagesLeft %}
+                <div class="main__benefits-item clearfix">
+                    <div class="main__benefits-item_img">
+                        <img src="{{ httpHost }}/images/{{ advantage.index }}.svg" alt="{{ advantage.header }}">
+                    </div>
+                    <div class="main__benefits-item_text">{{ advantage.header }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="main__benefits-right">
+                {% for advantage in advantagesRight %}
+                <div class="main__benefits-item clearfix">
+                    <div class="main__benefits-item_img">
+                        <img src="{{ httpHost }}/images/{{ advantage.index }}.svg" alt="{{ advantage.header }}">
+                    </div>
+                    <div class="main__benefits-item_text">{{ advantage.header }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <pagebreak/>
+    {% if progress and progress.items|length > 0 %}
+    <div class="main__title2">Ход строительства</div>
+    <div class="main__name2">{{ progress.dateWithMonth }}</div>
+    <div class="main__wrapper2 clearfix">
+        <div class="main__wrapper2-left">
+            {% for item in progressLeft %}
+                {% if item.photo %}
+                <div class="main__wrapper2-item">
+                    <img src="{{ vich_uploader_asset(item, 'photoFile') | imagine_filter('pdf_progress') }}" alt="">
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="main__wrapper2-right">
+            {% for item in progressRight %}
+                {% if item.photo %}
+                    <div class="main__wrapper2-item">
+                        <img src="{{ vich_uploader_asset(item, 'photoFile') | imagine_filter('pdf_progress') }}" alt="">
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% if building.qrCodeURL %}
+    <div class="main__name2">Онлайн-трансляция</div>
+    <div class="main__img2">
+        <a href="{{ building.qrCodeURL }}"><img src="{{ qr_code_url(building.qrCodeURL) }}" alt=""></a>
+    </div>
+    {% endif %}
+</main>
+<htmlpagefooter name="footer">
+    <footer class="footer">
+        <div class="footer__wrapper clearfix">
+            <div class="footer__sell">
+                {% if contacts.phone or contacts.email %}
+                <p class="footer__sell-title footer__title">Отдел продаж</p>
+                {% endif %}
+                {% if contacts.phone %}
+                    <p class="footer__sell-tel">{{ contacts.phone }}</p>
+                {% endif %}
+                {% if contacts.email %}
+                    <p class="footer__sell-mail"><a href="mailto: {{ contacts.email }}">{{ contacts.email }}</a></p>
+                {% endif %}
+            </div>
+            <div class="footer__address">
+                {% if contacts.officeAddress %}
+                <p class="footer__address-title footer__title">Адрес офиса продаж</p>
+                <p class="footer__address-address">{{ contacts.officeAddress }}</p>
+                {% endif %}
+            </div>
+            <div class="footer__site">
+                {% if contacts.site %}
+                <p class="footer__site-title footer__title">Сайт</p>
+                <p class="footer__site-site"><a href="{{ contacts.siteUrl }}">{{ contacts.site }}</a> </p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="footer__wrapper clearfix">
+            <div class="footer__legal">
+                Полная информация о застройщике и проектах строительства размещена на сайте <a href="https://наш.дом.рф">наш.дом.рф</a>
+                Застройщик — ГК «Академия» (ООО «СПЕЦИАЛИЗИРОВАННЫЙ ЗАСТРОЙЩИК ЧЕРНИКА»)
+            </div>
+        </div>
+    </footer>
+</htmlpagefooter>
+</body>

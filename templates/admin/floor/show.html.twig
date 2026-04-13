@@ -1,0 +1,47 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var floors App\Entity\Floor #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Этаж{% endblock %}
+
+{% block content_header_title %}Этаж{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_floor_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_floor_edit', {'id': floor.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ floor.id }}</td>
+            </tr>
+            <tr>
+                <th>Номер</th>
+                <td>{{ floor.number }}</td>
+            </tr>
+            <tr>
+                <th>Планировка</th>
+                <td>
+                    {% if floor.plan %}
+                        <a href="{{ vich_uploader_asset(floor, "planFile") }}" target="_blank">просмотр</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Планировка карточки</th>
+                <td>
+                    {% if floor.miniPlan %}
+                        <a href="{{ vich_uploader_asset(floor, "miniPlanFile") }}" target="_blank">просмотр</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>UploadDate</th>
+                <td>{{ floor.uploadDate ? floor.uploadDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

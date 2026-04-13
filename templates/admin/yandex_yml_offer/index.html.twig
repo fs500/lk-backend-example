@@ -1,0 +1,43 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var yandex_yml_offers App\Entity\YandexYmlOffer[] #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Предложения{% endblock %}
+
+{% block content_header_title %}Предложения{% endblock %}
+
+{% block page_actions %}<a class="action-new btn btn-primary btn-sm" href="{{ path('admin_yandex_yml_offer_new') }}">Добавить</a>{% endblock %}
+
+{% block body %}
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Название</th>
+                <th>Квартира</th>
+                <th class="list-options"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for yandex_yml_offer in yandex_yml_offers %}
+            <tr>
+                <td>{{ yandex_yml_offer.id }}</td>
+                <td>{{ yandex_yml_offer.name }}</td>
+                <td>{{ yandex_yml_offer.flat }}</td>
+                <td class="list-actions">
+                    <a class="fa fa-icons fa-pencil-square-o list-edit-button" href="{{ path('admin_yandex_yml_offer_edit', {'id': yandex_yml_offer.id}) }}"></a>
+                    <a class="fas fa-eye list-detail-button" href="{{ path('admin_yandex_yml_offer_show', {'id': yandex_yml_offer.id}) }}"></a>
+                    <a class="fas fa-trash-alt list-remove-button" data-id="{{ yandex_yml_offer.id }}" href="{{ path('admin_yandex_yml_offer_delete', {'id': yandex_yml_offer.id}) }}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form class="delete-form" method="post" data-action="{{ path('admin_yandex_yml_offer_delete', {'id': '__id__'}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endblock %}

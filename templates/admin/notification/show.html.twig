@@ -1,0 +1,57 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var notifications App\Entity\Notification #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Notification{% endblock %}
+
+{% block content_header_title %}Notification{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_notification_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_notification_edit', {'id': notification.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ notification.id }}</td>
+            </tr>
+            <tr>
+                <th>Дата начала показа</th>
+                <td>{{ notification.dateStart ? notification.dateStart|date('d.m.Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Дата окончания показа</th>
+                <td>{{ notification.dateFinish ? notification.dateFinish|date('d.m.Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Заголовок</th>
+                <td>{{ notification.header }}</td>
+            </tr>
+            <tr>
+                <th>Текст</th>
+                <td>{{ notification.text }}</td>
+            </tr>
+            <tr>
+                <th>Картинка</th>
+                <td>
+                    {% if notification.image %}
+                        <a href="{{ vich_uploader_asset(notification, 'imageFile') }}" target="_blank">
+                            <img src="{{ vich_uploader_asset(notification, 'imageFile') | imagine_filter('admin_show') }}" alt="">
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Текст на кнопке</th>
+                <td>{{ notification.buttonText }}</td>
+            </tr>
+            <tr>
+                <th>Ссылка на кнопке</th>
+                <td>{{ notification.buttonUrl }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

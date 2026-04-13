@@ -1,0 +1,31 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var yandex_yml_sets App\Entity\YandexYmlSet #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Сет{% endblock %}
+
+{% block content_header_title %}Сет{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_yandex_yml_set_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_yandex_yml_set_edit', {'id': yandex_yml_set.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ yandex_yml_set.id }}</td>
+            </tr>
+            <tr>
+                <th>Название</th>
+                <td>{{ yandex_yml_set.name }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ yandex_yml_set.url }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

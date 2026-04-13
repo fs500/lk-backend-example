@@ -1,0 +1,224 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\PageHowToRepository;
+use DateTime;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
+/**
+ * @ORM\Entity(repositoryClass=PageHowToRepository::class)
+ * @Vich\Uploadable
+ */
+class PageHowTo
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Page::class, inversedBy="howTos")
+     */
+    private $page;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $icon;
+
+    /**
+     * @Vich\UploadableField(mapping="images", fileNameProperty="icon")
+     * @var File|null
+     * @Assert\File(
+     *      mimeTypes = {
+     *          "image/jpg",
+     *          "image/jpeg",
+     *          "image/gif",
+     *          "image/png",
+     *          "image/svg+xml"
+     *      },
+     *      mimeTypesMessage = "Неверный формат файла. Разрешенный формат: jpg, gif, png, svg"
+     * )
+     */
+    private $iconFile;
+
+    /**
+     * @var DateTime|null
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $uploadDate;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $header;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $text;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $text2;
+
+    /**
+     * @var int|null
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $sort;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getPage(): ?Page
+    {
+        return $this->page;
+    }
+
+    public function setPage(?Page $page): self
+    {
+        $this->page = $page;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getIcon(): ?string
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param string|null $icon
+     * @return $this
+     */
+    public function setIcon(?string $icon): self
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getIconFile(): ?File
+    {
+        return $this->iconFile;
+    }
+
+    /**
+     * @param File|null $iconFile
+     * @return $this
+     */
+    public function setIconFile(?File $iconFile): self
+    {
+        $this->iconFile = $iconFile;
+        $this->updateDate();
+        return $this;
+    }
+
+    /**
+     * @return DateTime|null
+     */
+    public function getUploadDate(): ?DateTime
+    {
+        return $this->uploadDate;
+    }
+
+    /**
+     * @return $this
+     */
+    public function updateDate(){
+        $this->uploadDate = new DateTime();
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getHeader(): ?string
+    {
+        return $this->header;
+    }
+
+    /**
+     * @param string|null $header
+     * @return PageHowTo
+     */
+    public function setHeader(?string $header): PageHowTo
+    {
+        $this->header = $header;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getText(): ?string
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param string|null $text
+     * @return PageHowTo
+     */
+    public function setText(?string $text): PageHowTo
+    {
+        $this->text = $text;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getText2(): ?string
+    {
+        return $this->text2;
+    }
+
+    /**
+     * @param string|null $text2
+     * @return PageHowTo
+     */
+    public function setText2(?string $text2): PageHowTo
+    {
+        $this->text2 = $text2;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getSort(): ?int
+    {
+        return $this->sort;
+    }
+
+    /**
+     * @param int|null $sort
+     * @return PageHowTo
+     */
+    public function setSort(?int $sort): PageHowTo
+    {
+        $this->sort = $sort;
+        return $this;
+    }
+}

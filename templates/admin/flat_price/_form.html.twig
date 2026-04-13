@@ -1,0 +1,9 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+
+{% form_theme form with ['@EyeAdmin/Form/form_theme.html.twig'] %}
+
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-success">{{ button_label|default('Сохранить') }}</button>
+    <a class="btn btn-light" href="{{ path('admin_flat_price_index') }}">Назад</a>
+{{ form_end(form) }}

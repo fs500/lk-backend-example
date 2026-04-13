@@ -1,0 +1,46 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var banks App\Entity\Bank[] #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Банки{% endblock %}
+
+{% block content_header_title %}Банки{% endblock %}
+
+{% block page_actions %}<a class="action-new btn btn-primary btn-sm" href="{{ path('admin_bank_new') }}">Добавить</a>{% endblock %}
+
+{% block body %}
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Логотип</th>
+                <th>Название</th>
+                <th class="list-options"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bank in banks %}
+            <tr>
+                <td>
+                    {% if bank.logo %}
+                        <img src="{{ vich_uploader_asset(bank, 'logoFile') | imagine_filter('admin_show') }}" alt="">
+                    {% endif %}
+                </td>
+
+                <td>{{ bank.header }}</td>
+                <td class="list-actions">
+                    <a class="fa fa-icons fa-pencil-square-o list-edit-button" href="{{ path('admin_bank_edit', {'id': bank.id}) }}"></a>
+                    <a class="fas fa-eye list-detail-button" href="{{ path('admin_bank_show', {'id': bank.id}) }}"></a>
+                    <a class="fas fa-trash-alt list-remove-button" data-id="{{ bank.id }}" href="{{ path('admin_bank_delete', {'id': bank.id}) }}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form class="delete-form" method="post" data-action="{{ path('admin_bank_delete', {'id': '__id__'}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endblock %}

@@ -1,0 +1,47 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var infrastructures App\Entity\Infrastructure[] #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Объекты инфраструктуры{% endblock %}
+
+{% block content_header_title %}Объекты инфраструктуры{% endblock %}
+
+{% block page_actions %}<a class="action-new btn btn-primary btn-sm" href="{{ path('admin_infrastructure_new') }}">Добавить</a>{% endblock %}
+
+{% block body %}
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Название группы</th>
+                <th>Количество объектов</th>
+                <th>Значок</th>
+                <th class="list-options"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for infrastructure in infrastructures %}
+            <tr>
+                <td>{{ infrastructure.header }}</td>
+                <td><span class="badge badge-light">{{ infrastructure.items | length }}</span></td>
+                <td>
+                    {% if infrastructure.icon %}
+                    <img src="{{ vich_uploader_asset(infrastructure, 'iconFile') }}" alt="">
+                    {% endif %}
+                </td>
+                <td class="list-actions">
+                    <a class="fa fa-icons fa-pencil-square-o list-edit-button" href="{{ path('admin_infrastructure_edit', {'id': infrastructure.id}) }}"></a>
+                    <a class="fas fa-eye list-detail-button" href="{{ path('admin_infrastructure_show', {'id': infrastructure.id}) }}"></a>
+                    <a class="fas fa-trash-alt list-remove-button" data-id="{{ infrastructure.id }}" href="{{ path('admin_infrastructure_delete', {'id': infrastructure.id}) }}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form class="delete-form" method="post" data-action="{{ path('admin_infrastructure_delete', {'id': '__id__'}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endblock %}

@@ -1,0 +1,3 @@
+ajax_uploader_file_handler:
+    path: /admin/ajax-uploader/
+    controller: Eyetronic\AjaxUploaderBundle\Controller\UploaderController:upload

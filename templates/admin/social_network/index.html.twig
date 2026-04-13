@@ -1,0 +1,51 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var social_networks App\Entity\SocialNetwork[] #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Социальные сети{% endblock %}
+
+{% block content_header_title %}Социальные сети{% endblock %}
+
+{% block page_actions %}<a class="action-new btn btn-primary btn-sm" href="{{ path('admin_social_network_new') }}">Добавить</a>{% endblock %}
+
+{% block body %}
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Социальная сеть</th>
+                <th>Значок</th>
+                <th>URL группы</th>
+                <th class="list-options"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for social_network in social_networks %}
+            <tr>
+                <td>{{ social_network.header }}</td>
+                <td>
+                    {% if social_network.icon %}
+                        <img src="{{ vich_uploader_asset(social_network, 'iconFile') }}" alt="">
+                    {% endif %}
+                </td>
+                <td>
+                    {% if social_network.url %}
+                    <a href="{{ social_network.url }}" target="_blank">{{ social_network.url }}</a>
+                    {% endif %}
+                </td>
+                <td class="list-actions">
+                    <a class="fa fa-icons fa-pencil-square-o list-edit-button" href="{{ path('admin_social_network_edit', {'id': social_network.id}) }}"></a>
+                    <a class="fas fa-eye list-detail-button" href="{{ path('admin_social_network_show', {'id': social_network.id}) }}"></a>
+                    <a class="fas fa-trash-alt list-remove-button" data-id="{{ social_network.id }}" href="{{ path('admin_social_network_delete', {'id': social_network.id}) }}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form class="delete-form" method="post" data-action="{{ path('admin_social_network_delete', {'id': '__id__'}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endblock %}

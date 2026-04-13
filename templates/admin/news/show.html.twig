@@ -1,0 +1,49 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var news App\Entity\News #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Новость{% endblock %}
+
+{% block content_header_title %}Новость{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_news_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_news_edit', {'id': news.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ news.id }}</td>
+            </tr>
+            <tr>
+                <th>Заголовок</th>
+                <td>{{ news.header }}</td>
+            </tr>
+            <tr>
+                <th>Дата</th>
+                <td>{{ news.date ? news.date|date('d.m.Y') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Краткое описание</th>
+                <td>{{ news.description }}</td>
+            </tr>
+            <tr>
+                <th>Текст</th>
+                <td>{{ news.text }}</td>
+            </tr>
+            <tr>
+                <th>Фотография</th>
+                <td>
+                    {% if news.image %}
+                        <a href="{{ vich_uploader_asset(news, 'imageFile') }}" target="_blank">
+                            <img src="{{ vich_uploader_asset(news, 'imageFile') | imagine_filter('admin_show') }}" alt="">
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

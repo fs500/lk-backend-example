@@ -1,0 +1,119 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var yandex_yml_shops App\Entity\YandexYmlShop #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}YandexYmlShop{% endblock %}
+
+{% block content_header_title %}YandexYmlShop{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_yandex_yml_shop_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_yandex_yml_shop_edit', {'id': yandex_yml_shop.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ yandex_yml_shop.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ yandex_yml_shop.name }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ yandex_yml_shop.url }}</td>
+            </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ yandex_yml_shop.company }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ yandex_yml_shop.email }}</td>
+            </tr>
+            <tr>
+                <th>ParamConversion</th>
+                <td>{{ yandex_yml_shop.paramConversion }}</td>
+            </tr>
+            <tr>
+                <th>ParamOfferType</th>
+                <td>{{ yandex_yml_shop.paramOfferType }}</td>
+            </tr>
+            <tr>
+                <th>Vendor</th>
+                <td>{{ yandex_yml_shop.vendor }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ yandex_yml_shop.description }}</td>
+            </tr>
+            <tr>
+                <th>ParamBuilderUrl</th>
+                <td>{{ yandex_yml_shop.paramBuilderUrl }}</td>
+            </tr>
+            <tr>
+                <th>ParamMinMortgage</th>
+                <td>{{ yandex_yml_shop.paramMinMortgage }}</td>
+            </tr>
+            <tr>
+                <th>ParamEstateType</th>
+                <td>{{ yandex_yml_shop.paramEstateType }}</td>
+            </tr>
+            <tr>
+                <th>ParamEstateClass</th>
+                <td>{{ yandex_yml_shop.paramEstateClass ? yandex_yml_shop.paramEstateClass|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ParamAddress</th>
+                <td>{{ yandex_yml_shop.paramAddress }}</td>
+            </tr>
+            <tr>
+                <th>ParamLatitude</th>
+                <td>{{ yandex_yml_shop.paramLatitude }}</td>
+            </tr>
+            <tr>
+                <th>ParamLongitude</th>
+                <td>{{ yandex_yml_shop.paramLongitude }}</td>
+            </tr>
+            <tr>
+                <th>ParamBuiltYear</th>
+                <td>{{ yandex_yml_shop.paramBuiltYear }}</td>
+            </tr>
+            <tr>
+                <th>ParamTotalFloor</th>
+                <td>{{ yandex_yml_shop.paramTotalFloor }}</td>
+            </tr>
+            <tr>
+                <th>ParamSubwayDistance</th>
+                <td>{{ yandex_yml_shop.paramSubwayDistance }}</td>
+            </tr>
+            <tr>
+                <th>ParamSubwayDistanceUnit</th>
+                <td>{{ yandex_yml_shop.paramSubwayDistanceUnit }}</td>
+            </tr>
+            <tr>
+                <th>ParamParkingType</th>
+                <td>{{ yandex_yml_shop.paramParkingType ? yandex_yml_shop.paramParkingType|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ParamFinishing</th>
+                <td>{{ yandex_yml_shop.paramFinishing ? yandex_yml_shop.paramFinishing|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ParamRepair</th>
+                <td>{{ yandex_yml_shop.paramRepair ? yandex_yml_shop.paramRepair|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ParamSite</th>
+                <td>{{ yandex_yml_shop.paramSite }}</td>
+            </tr>
+            <tr>
+                <th>ParamPhone</th>
+                <td>{{ yandex_yml_shop.paramPhone }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

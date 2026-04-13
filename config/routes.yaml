@@ -1,0 +1,27 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+_liip_imagine:
+  resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+
+admin_metatag:
+  path: /admin/metatag
+  controller: Eyetronic\SymfonyMetatagBundle\Controller\Admin\MetatagController::index
+admin_metatag_new:
+  path: /admin/metatag/new
+  controller: Eyetronic\SymfonyMetatagBundle\Controller\Admin\MetatagController::new
+admin_metatag_show:
+  path: /admin/metatag/{id}
+  methods: GET
+  controller: Eyetronic\SymfonyMetatagBundle\Controller\Admin\MetatagController::show
+admin_metatag_edit:
+  path: /admin/metatag/{id}/edit
+  controller: Eyetronic\SymfonyMetatagBundle\Controller\Admin\MetatagController::edit
+admin_metatag_delete:
+  path: /admin/metatag/{id}
+  methods: DELETE
+  controller: Eyetronic\SymfonyMetatagBundle\Controller\Admin\MetatagController::delete
+api_metatag_search:
+  path: /api/metatag/search
+  methods: GET
+  controller: Eyetronic\SymfonyMetatagBundle\Controller\Api\MetatagController::search

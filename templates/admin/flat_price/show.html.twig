@@ -1,0 +1,39 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var flat_prices App\Entity\FlatPrice #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Обновление цен{% endblock %}
+
+{% block content_header_title %}Обновление цен{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_flat_price_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_flat_price_edit', {'id': flat_price.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ flat_price.id }}</td>
+            </tr>
+            <tr>
+                <th>Этажи</th>
+                <td>{{ flat_price.floors ? flat_price.floors|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Комнатность</th>
+                <td>{{ flat_price.rooms ? flat_price.roomsDescription|join('<br>')|raw : '' }}</td>
+            </tr>
+            <tr>
+                <th>Цена за кв. м.</th>
+                <td>{{ flat_price.price }}</td>
+            </tr>
+            <tr>
+                <th>Дата обновления</th>
+                <td>{{ flat_price.date ? flat_price.date.format("d.m.Y H:i") : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

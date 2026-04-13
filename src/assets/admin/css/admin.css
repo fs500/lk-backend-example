@@ -1,0 +1,67 @@
+.block-link .type-field.hide,
+.block-link .type-header-field.hide,
+.block-plan .type-field.hide{
+    display: none;
+}
+.project-tabs{
+    margin-bottom: 20px;
+}
+.setting-form {
+    display: block;
+}
+.setting-form legend.col-form-label{
+    text-align: left;
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+.setting-form .form-widget{
+    width: 100%;
+    flex: none;
+}
+.setting-form .form-widget textarea,
+.setting-form .form-widget input[type=text],
+.setting-form .form-widget input[type=number]{
+    width: 80%;
+    max-width: none;
+}
+.setting-form .setting-item label{
+    display: block;
+    flex: none;
+    text-align: left;
+    cursor: pointer;
+    margin-bottom: 5px;
+}
+.setting-form .setting-item .setting-note{
+    font-style: italic;
+    color: #666;
+    font-size: 13px;
+    margin-top: -7px;
+}
+optgroup:disabled,
+optgroup:disabled option{
+    color: #cccccc;
+}
+.action-refresh{
+    transition-duration: .5s;
+}
+.action-refresh span{
+    display: inline-block;
+    width: 140px;
+    text-align: left;
+}
+.search-table .sort-column{
+    cursor: pointer;
+}
+.search-table .sort-column:hover{
+    color: #0056b3;
+}
+.search-form .search-form-submit{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    left: -9999px;
+}
+.dashboard .sidebar-sticky {
+    height: auto !important;
+    margin-bottom: 150px;
+}

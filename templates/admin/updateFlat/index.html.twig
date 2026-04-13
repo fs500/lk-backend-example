@@ -1,0 +1,104 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% form_theme form with [
+    '@EyeAdmin/Form/form_theme.html.twig',
+    'admin/ajax-file-dropzone.html.twig',
+] %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('form') }}
+    {{ encore_entry_script_tags('ajaxuploader') }}
+    {{ encore_entry_script_tags('ajaxFileWidget') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('form') }}
+    {{ encore_entry_link_tags('ajaxuploaderCss') }}
+    {{ encore_entry_link_tags('ajaxFileWidget') }}
+{% endblock %}
+
+
+{% block title %}Обновление квартир{% endblock %}
+
+{% block content_header_title %}Обновление квартир{% endblock %}
+
+{% block body %}
+    <div class="container-fluid py-4">
+        <div class="row">
+        Вы можете&nbsp;<a href="/import/flats.xlsx">скачать пример файла</a>&nbsp;для обновления.
+        </div>
+    </div>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    <button class="btn btn-success submit-button" disabled="disabled">{{ button_label|default('Обновить') }}</button>
+    <a href="{{ path('admin_flat_index') }}" class="btn btn-light">Назад</a>
+    {{ form_end(form) }}
+    <div class="alert" role="alert" style="display: none">
+        <h6 class="alert-heading"></h6>
+        <div class="update-result"></div>
+        <hr>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="button" class="btn btn-light show-form btn-sm">Загрузить еще</button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('.show-form').click(function(e){
+                e.preventDefault();
+                let block = $(this).closest('.alert'),
+                    form = $('.smart-form')
+                ;
+                block.slideUp(300);
+                form.slideDown(300);
+            });
+            $(".dropbox-file-block").on('file-added', function(){
+                $('.submit-button').removeAttr('disabled');
+            })
+            $('.smart-form').editForm('init', {
+                successHandler: function(data){
+                    console.log(data);
+                    if(data.success != undefined){
+                        let block = $('.alert'),
+                            container = block.find('.update-result'),
+                            form = $('.smart-form'),
+                            blockClass,
+                            header
+                        ;
+                        block.removeClass('alert-success alert-danger alert-warning').find('.alert-heading').text("");
+                        if(data.parserErrors.length == 0){
+                            blockClass = "alert-success";
+                            header = "Данные обновлены";
+                        }
+                        else{
+                            if(data.updatedFlats == 0){
+                                blockClass = "alert-danger";
+                                header = "Данные не обновлены";
+                            }
+                            else{
+                                blockClass = "alert-warning";
+                                header = "Данные частично обновлены";
+                            }
+                        }
+                        block.addClass(blockClass).find('.alert-heading').text(header);
+                        container.find('div, ul').remove();
+                        container.append('<div>Квартир обновлено: ' + data.updatedFlats + '</div>');
+                        if(data.parserErrors.length > 0){
+                            container.append('<div>Ошибки:</div>');
+                            let ul = $('<ul></ul>');
+                            for(let i in data.parserErrors){
+                                if(data.parserErrors.hasOwnProperty(i)){
+                                    ul.append('<li>' + data.parserErrors[i] + '</li>');
+                                }
+                            }
+                            container.append(ul);
+                        }
+                        form.slideUp(300);
+                        block.slideDown(300);
+                    }
+                }
+            });
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,35 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var menus App\Entity\Menu #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Пункт меню{% endblock %}
+
+{% block content_header_title %}Пункт меню{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_menu_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_menu_edit', {'id': menu.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ menu.id }}</td>
+            </tr>
+            <tr>
+                <th>Название</th>
+                <td>{{ menu.header }}</td>
+            </tr>
+            <tr>
+                <th>Сортировка</th>
+                <td>{{ menu.sort }}</td>
+            </tr>
+            <tr>
+                <th>Подпунктов</th>
+                <td>{{ menu.items|length }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

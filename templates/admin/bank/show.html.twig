@@ -1,0 +1,41 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var banks App\Entity\Bank #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Банк{% endblock %}
+
+{% block content_header_title %}Банк{% endblock %}
+
+{% block page_actions %}
+<a class="action-list btn btn-primary btn-sm" href="{{ path('admin_bank_index') }}">Список</a>
+<a class="action-edit btn btn-success btn-sm" href="{{ path('admin_bank_edit', {'id': bank.id}) }}">Редактировать</a>
+{% endblock %}
+
+{% block body %}
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>#</th>
+                <td>{{ bank.id }}</td>
+            </tr>
+            <tr>
+                <th>Логотип</th>
+                <td>
+                    {% if bank.logo %}
+                        <a href="{{ vich_uploader_asset(bank, 'logoFile') }}" target="_blank">
+                            <img src="{{ vich_uploader_asset(bank, 'logoFile') | imagine_filter('admin_show') }}" alt="">
+                        </a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>Название</th>
+                <td>{{ bank.header }}</td>
+            </tr>
+            <tr>
+                <th>Сортировка</th>
+                <td>{{ bank.sort }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

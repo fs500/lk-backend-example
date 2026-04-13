@@ -1,0 +1,49 @@
+{# @var eye_admin \Eyetronic\EyeAdminBundle\Context\AdminContext #}
+{# @var building_progresses App\Entity\BuildingProgress[] #}
+{% extends '@EyeAdmin/dashboard-base.html.twig' %}
+
+{% block title %}Ход строительства{% endblock %}
+
+{% block content_header_title %}Ход строительства{% endblock %}
+
+{% block page_actions %}<a class="action-new btn btn-primary btn-sm" href="{{ path('admin_building_progress_new') }}">Добавить</a>{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('admin') }}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('admin') }}
+{% endblock %}
+
+{% block body %}
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Дата</th>
+                <th>Фотографий</th>
+                <th class="list-options"></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for building_progress in building_progresses %}
+            <tr>
+                <td>{{ building_progress.date ? building_progress.date|date('d.m.Y') : '' }}</td>
+                <td><span class="badge badge-light">{{ building_progress.items|length }}</span></td>
+                <td class="list-actions">
+                    <a class="fa fa-icons fa-pencil-square-o list-edit-button" href="{{ path('admin_building_progress_edit', {'id': building_progress.id}) }}"></a>
+                    <a class="fas fa-eye list-detail-button" href="{{ path('admin_building_progress_show', {'id': building_progress.id}) }}"></a>
+                    <a class="fas fa-trash-alt list-remove-button" data-id="{{ building_progress.id }}" href="{{ path('admin_building_progress_delete', {'id': building_progress.id}) }}"></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Нет записей</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <form class="delete-form" method="post" data-action="{{ path('admin_building_progress_delete', {'id': '__id__'}) }}">
+        <input type="hidden" name="_method" value="DELETE">
+    </form>
+{% endblock %}
